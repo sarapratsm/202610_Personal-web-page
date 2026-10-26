@@ -426,3 +426,35 @@ FodyWeavers.xsd
 
 # Official VS Code C# Dev Kit Extension exclusion
 #*.lscache
+
+
+# ==========================================
+# Personal Web Project Custom Rules
+# ==========================================
+
+# SQLite Databases & temporary journal/WAL files
+*.db
+*.db-shm
+*.db-wal
+*.sqlite
+*.sqlite3
+
+# ASP.NET Core local settings with sensitive data / secrets
+appsettings.Development.json
+
+# Default MVC client-side libraries (reemplazadas por Tailwind)
+**/wwwroot/lib/
+
+# Tailwind CSS compiled output (se regenera en cada build)
+**/wwwroot/css/output.css
+
+# Local uploaded assets during development (Fase 2)
+**/wwwroot/uploads/*
+!**/wwwroot/uploads/.gitkeep
+
+# Operating System specific files
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+$RECYCLE.BIN/
+.DS_Store

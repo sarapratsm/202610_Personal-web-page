@@ -1,0 +1,7 @@
+<Solution>
+  <Folder Name="/src/">
+    <Project Path="src/MiWebPersonal.Core/MiWebPersonal.Core.csproj" />
+    <Project Path="src/MiWebPersonal.Infrastructure/MiWebPersonal.Infrastructure.csproj" />
+    <Project Path="src/MiWebPersonal.Web/MiWebPersonal.Web.csproj" />
+  </Folder>
+</Solution>
