@@ -1,7 +1,11 @@
+using MiWebPersonal.Core.Interfaces;
+using MiWebPersonal.Infrastructure.Services;
+
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
+// Add services to the container. ¡INYECTAR DEPENDENCIAS!
 builder.Services.AddControllersWithViews();
+builder.Services.AddScoped<IProyectoService, ProyectoService>();
 
 var app = builder.Build();
 
