@@ -7,7 +7,15 @@ La intención de este proyecto es primeramente, desarrollar una página web. Al 
 
 La intención también es que esta web esté hecha con mucho amor y paciencia, que parece que hoy en día escasea. No me sirve simplemente crear una web que funcione. Quiero crear una web que entienda cómo funciona. Quiero pelearme con el código y darme cabezazos contra la pared; los que haga falta. 
 
-La intención NO es usar IA para escribir código. la intención es escribir yo misma el código, a la antigua usanza, pues creo que este es el camino (sí, el camino dificil) que puede llevarme a ser mejor programadora.
+La intención NO es usar IA para escribir código. la intención es escribir yo misma el código, a la antigua usanza, pues creo que este es el camino (sí, el camino dificil) que puede llevarme a ser mejor programadora. Sí será aceptable el uso de IA para hacer documentación posterior.
 
 
+## Estructura del proyecto (provisional)
+* docs  <---aquí va toda la documentación del proyecto, incluyendo la definición del mismo
+* src   <---código del proyecto
+* tests <---bastante autodescriptivo...
 
+Dentro de src, el código se divide usando MVC: 
+* Core (Modelo)
+* Infrastructure (Controlador)
+* Web (Vistas)
