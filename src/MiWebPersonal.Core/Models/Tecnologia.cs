@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace MiWebPersonal.Core.Models
+﻿namespace MiWebPersonal.Core.Models
 {
     public class Tecnologia
     {
