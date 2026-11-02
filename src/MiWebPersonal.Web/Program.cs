@@ -29,5 +29,7 @@ app.MapControllerRoute(
     pattern: "{controller=Home}/{action=Index}/{id?}")
     .WithStaticAssets();
 
+//Añadir pagina 404 personalizada:
+app.UseStatusCodePagesWithReExecute("/Home/Error404");
 
 app.Run();
