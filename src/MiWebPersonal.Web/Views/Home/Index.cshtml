@@ -7,44 +7,47 @@
 
 <div class="fondo-rosa text-center">
     <h1 class="display-4">Sara Prats Morales</h1>
-    <h2>Desarrolladora de software</h2>
-    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+    <h2 class="h4 text-muted mb-4">De la ciencia de materiales al backend (y ahora peleándome con el CSS)</h2>   
+    <!--<p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>-->
     <p>
-        ¡Bienvenide a mi primera web! Este proyecto pretende ser una iniciación al mundo web totalmente autónomo. He creado otras webs con ayuda de la IA, pero echaba en falta ponerme manos a la obra y entender el paso a paso del desarrollo del código... <br/> Me alegro de que estés acompañándome en esta aventura loca en una época en que todo se hace rápido y con ansias.
+        ¡Bienvenide a mi primera web! Este proyecto pretende ser una iniciación al mundo web totalmente autónomo. He creado otras webs con ayuda de la IA, pero echaba en falta ponerme manos a la obra y entender el paso a paso del desarrollo del código... <br /> Me alegro de que estés acompañándome en esta aventura loca en una época en que todo se hace rápido y con ansias.
     </p>
+    <p>Tengo un grado en ingeniería de Materiales (2018-2023), pero al terminar mi formación me di cuenta de que quería dedicarme al desarrollo de software. Empecé un ciclo superior en programación de aplicaciones multiplataforma (DAM) en septiembre de 2024. En estos momentos estoy a punto de finalizar mis prácticas en empresa, de modo que espero poder compartir más sobre mi experiencia en el futuro. De momento tengo algunos proyectos que he hecho durante mi formación publicados en mi github personal (como este).</p>
+    <p>Enlace a mi linkedin: <a href="https://www.linkedin.com/in/sara-prats-morales/" target="_blank">Sara Prats Morales</a></p>
+    <p>Enlace a mi github: <a href="https://github.com/sarapratsm" target="_blank">Sara Prats Morales</a></p>
 </div>
 
 <div class="fondo-gris">
-    <hr/>
+    <hr />
     <h2 class="text-center">Proyectos</h2>
-        @if (Model == null || Model.Count == 0)
-        {
-            <p>No hay proyectos disponibles.</p>
-        }
-        else
-        {
-            <div class="row">
-                @foreach (var proyecto in Model)
-                {
-                    <div class="col-md-4">
-                        <div class="card">
-                            <div class="card-body">
-                                <h5 class="card-title">@proyecto.Titulo</h5>
-                                <p class="card-text">@proyecto.Descripcion</p>
-                                <p><strong>Tecnologías:</strong></p>
-                                <ul>
-                                    @foreach (var tecnologia in proyecto.Tecnologias)
-                                    {
-                                        <li>@tecnologia.Nombre</li>
-                                    }
-                                </ul>
-                            </div>
+    @if (Model == null || Model.Count == 0)
+    {
+        <p>No hay proyectos disponibles.</p>
+    }
+    else
+    {
+        <div class="row">
+            @foreach (var proyecto in Model)
+            {
+                <div class="col-md-4">
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title">@proyecto.Titulo</h5>
+                            <p class="card-text">@proyecto.Descripcion</p>
+                            <p><strong>Tecnologías:</strong></p>
+                            <ul>
+                                @foreach (var tecnologia in proyecto.Tecnologias)
+                                {
+                                    <li>@tecnologia.Nombre</li>
+                                }
+                            </ul>
                         </div>
                     </div>
-                }
-            </div>
-        }
-    
+                </div>
+            }
+        </div>
+    }
+
 </div>
 
 
