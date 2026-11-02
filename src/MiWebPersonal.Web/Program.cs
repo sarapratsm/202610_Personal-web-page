@@ -19,17 +19,17 @@ if (!app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 app.UseRouting();
-
 app.UseAuthorization();
 
-app.MapStaticAssets();
+//Añadir middle ware para página 404 personalizada:
+app.UseStatusCodePagesWithReExecute("/Home/Error404");
 
+app.MapStaticAssets();
 app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}")
     .WithStaticAssets();
 
-//Añadir pagina 404 personalizada:
-app.UseStatusCodePagesWithReExecute("/Home/Error404");
+
 
 app.Run();

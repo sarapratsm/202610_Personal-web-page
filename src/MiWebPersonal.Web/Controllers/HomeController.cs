@@ -43,7 +43,7 @@ public class HomeController : Controller
 
     public IActionResult Error404()
     {
-        return View(); //TODO: Crear una vista personalizada para el error 404 (Not Found)
+        return View(); 
     }
 
     // Crear una accion que devuelva mi curriculum en PDF, para que el usuario pueda descargarlo desde la web.
