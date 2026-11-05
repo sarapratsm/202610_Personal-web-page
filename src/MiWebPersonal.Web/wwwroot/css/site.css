@@ -20,8 +20,19 @@ html {
 }
 
 body {
-    margin-bottom: 60px;   
-    
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    margin-bottom: 60px;
+    background-size: cover;
+}
+
+.font-serif-title {
+    font-family: 'Playfair Display', serif;
+}
+
+.paper-texture {
+    background-image: radial-gradient(rgba(0, 0, 0, 0.04) 1px, transparent 0);
+    background-size: 24px 24px;
+    pointer-events: none;
 }
 
 .form-floating > .form-control-plaintext::placeholder, .form-floating > .form-control::placeholder {
@@ -42,7 +53,30 @@ body {
 }
 
 .card {
-    margin-left:5px
-
+    margin-left: 5px
 }
- 
+
+.glass-panel {
+    background: rgba(255, 255, 255, 0.72);
+    backdrop-filter: blur(16px);
+    border: 1px solid rgba(255, 255, 255, 0.85);
+    box-shadow: 0 20px 40px -15px rgba(0, 0, 0, 0.05), 0 0 1px 1px rgba(0, 0, 0, 0.02);
+}
+
+.glass-btn {
+    background: rgba(255, 255, 255, 0.8);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    border: 1px solid rgba(229, 231, 235, 0.7);
+    transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+    .glass-btn:hover {
+        background: rgba(255, 255, 255, 0.9);
+        border-color: rgba(229, 231, 235, 0.9);
+        box-shadow: 0 10px 20px -5px rgba(0, 0, 0, 0.1), 0 0 1px 1px rgba(0, 0, 0, 0.05);
+    }
+
+    .glass-btn:active {
+        transform: translateY(0.5px) scale(0.98);
+    }

@@ -5,75 +5,87 @@
     ViewData["Title"] = "Home Page";
 }
 
-<div class="fondo-rosa text-center py-5">
-    <h1 class="display-4 fw-bold">Sara Prats Morales</h1>
-    <h2 class="h4 text-muted mb-4">De la ciencia de materiales al backend (y ahora peleándome con el CSS)</h2>
+<!--Estuve mirando fotos que hice y vi una que tenía las manos llenas de pintura. Se me ocurrió que podría crear una mancha de pintura cada vez que alguien hiciera click en la web. Debo admitir que para esto sí me está ayudando la IA porque es un salto un poco más grande de nivel xD-->
+<!--Capa 1: El canvas nos da la interactividad-->
+<canvas id="paintCanvas" style="position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; z-index: 0; display: block;"></canvas>
+<!--Capa 2: Textura de papel encima del lienzo-->
+<div class="paper-texture position-fixed top-0 start-0 w-100 h-100" style="z-index: 1;"></div>
 
-    <div class="col-lg-8 mx-auto lead text-start">
-        <!-- Descripción personal -->
-        <p>
-            ¡Hola! Te doy la bienvenida a mi rincón en internet. En plena era del <em>«pídeselo a la IA y que compile lo que sea»</em>,
-            esta web nace de las ganas de volver a lo artesanal: picar código a mano, entender cada engranaje por dentro y
-            pegarse con el framework hasta que las piezas encajen como deben.
-        </p>
-        <p>
-            Vengo de graduarme en <strong>Ingeniería de Materiales</strong>, donde aprendí a analizar problemas desde la estructura base, anecdotas sobre el Titanic y un montón de otras cosas que no me sirvieron para encontrar un trabajo en el que me sintiera cómoda.
-            Tras cansarme de fábricas ruidosas, camiones y maquinaria peligrosa, cambié el casco de seguridad por terminales y bases de datos con el ciclo de <strong>DAM</strong>.
-            Actualmente ando liada terminando mis prácticas en Maccion Lean Solutions, donde trabajo con <strong>.NET / C#</strong>, automatizaciones de procesos con <strong>Odoo</strong>,
-            y llevando a producción herramientas reales con IA (cuando no estoy rompiendo layouts web por diversión).
-        </p>
-        <p class="mb-4">
-            Abajo puedes ver algunos de los proyectos y cacharros que voy subiendo a mi repositorio. Si te apetece charlar sobre código,
-            procesos o simplemente saludar:
-        </p>
+<!--Capa 3: Contenido de la web-->
+<div class="position-relative py-5" style="z-index: 2;">
+    <div class="container mb-5">
+        <div class="col-lg-9 mx-auto p-4 p-md-5 rounded-4 glass-panel text-center">
+            <h1 class="display-4 fw-bold font-serif-title">Sara Prats Morales</h1>
+            <!--h4 és mayor en tamaño que h5... -->
+            <h2 class="h5 text-muted">De la ciencia de materiales al desarrollo de software</h2>
+
+            <div class="lead text-start">
+                <!-- Descripción personal -->
+                <p>
+                    ¡Hola! Te doy la bienvenida a mi rincón en internet. En plena era del <em>«pídeselo a la IA y que compile lo que sea»</em>,
+                    esta web nace de las ganas de volver a lo artesanal: picar código a mano, entender cada engranaje por dentro y
+                    pegarse con el framework hasta que las piezas encajen como deben.
+                </p>
+                <p>
+                    Vengo de graduarme en <strong>Ingeniería de Materiales</strong>, donde aprendí a analizar problemas desde la estructura base, anecdotas sobre el Titanic y un montón de otras cosas que no me sirvieron para encontrar un trabajo en el que me sintiera cómoda.
+                    Tras cansarme de fábricas ruidosas, camiones y maquinaria peligrosa, cambié el casco de seguridad por terminales y bases de datos con el ciclo de <strong>DAM</strong>.
+                    Actualmente ando liada terminando mis prácticas en Maccion Lean Solutions, donde trabajo con <strong>.NET / C#</strong>, automatizaciones de procesos con <strong>Odoo</strong>,
+                    y llevando a producción herramientas reales con IA (cuando no estoy rompiendo layouts web por diversión).
+                </p>
+                <p class="mb-0">
+                    Abajo puedes ver algunos de los proyectos y cacharros que voy subiendo a mi repositorio. Si te apetece charlar sobre código,
+                    procesos o simplemente saludar:
+                </p>
+            </div>
+
+
+            <!-- Enlaces a mis redes sociales aquí-->
+            <div class="d-flex justify-content-center gap-3 mt-3">
+                <a href="https://github.com/sarapratsm" target="_blank" class="btn glass-btn text-dark">
+                    <i class="bi bi-github"></i> GitHub
+                </a>
+                <a href="https://www.linkedin.com/in/sara-prats-morales/" target="_blank" class="btn glass-btn text-dark">
+                    <i class="bi bi-linkedin"></i> LinkedIn
+                </a>
+                <a href="@Url.Action("DescargarCurriculum", "Home")" class="btn glass-btn text-dark">
+                    <i class="bi bi-download"></i> Descárgate mi Curriculum
+                </a>
+            </div>
+        </div>
     </div>
 
-
-    <!-- Enlaces a mis redes sociales aquí-->
-    <div class="d-flex justify-content-center gap-3 mt-3">
-        <a href="https://github.com/sarapratsm" target="_blank" class="btn btn-dark">
-            <i class="bi bi-github"></i> GitHub
-        </a>
-        <a href="https://www.linkedin.com/in/sara-prats-morales/" target="_blank" class="btn btn-secondary">
-            <i class="bi bi-linkedin"></i> LinkedIn
-        </a>
-        <a href="@Url.Action("DescargarCurriculum", "Home")" class="btn btn-success">
-            <i class="bi bi-download"></i> Descárgate mi Curriculum
-        </a>
-    </div>
-</div>
-
-<div class="fondo-gris">
-    <hr />
-    <h2 class="text-center">Proyectos</h2>
-    @if (Model == null || Model.Count == 0)
-    {
-        <p>No hay proyectos disponibles.</p>
-    }
-    else
-    {
-        <div class="row">
-            @foreach (var proyecto in Model)
-            {
-                <div class="col-md-4">
-                    <div class="card">
-                        <div class="card-body">
-                            <h5 class="card-title">@proyecto.Titulo</h5>
-                            <p class="card-text">@proyecto.Descripcion</p>
-                            <p><strong>Tecnologías:</strong></p>
-                            <ul>
-                                @foreach (var tecnologia in proyecto.Tecnologias)
-                                {
-                                    <li>@tecnologia.Nombre</li>
-                                }
-                            </ul>
+    <div>
+        <hr />
+        <h2 class="text-center">Proyectos</h2>
+        @if (Model == null || Model.Count == 0)
+        {
+            <p>No hay proyectos disponibles.</p>
+        }
+        else
+        {
+            <div class="row">
+                @foreach (var proyecto in Model)
+                {
+                    <div class="col-md-4">
+                        <div class="card">
+                            <div class="card-body">
+                                <h5 class="card-title">@proyecto.Titulo</h5>
+                                <p class="card-text">@proyecto.Descripcion</p>
+                                <p><strong>Tecnologías:</strong></p>
+                                <ul>
+                                    @foreach (var tecnologia in proyecto.Tecnologias)
+                                    {
+                                        <li>@tecnologia.Nombre</li>
+                                    }
+                                </ul>
+                            </div>
                         </div>
                     </div>
-                </div>
-            }
-        </div>
-    }
+                }
+            </div>
+        }
 
+    </div>
 </div>
 
 
