@@ -4,4 +4,8 @@
     <Project Path="src/MiWebPersonal.Infrastructure/MiWebPersonal.Infrastructure.csproj" />
     <Project Path="src/MiWebPersonal.Web/MiWebPersonal.Web.csproj" />
   </Folder>
+  <Folder Name="/tests/">
+    <Project Path="tests/MiWebPersonal.Tests/MiWebPersonal.Tests.csproj" />
+  </Folder>
 </Solution>
+
