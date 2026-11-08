@@ -1,0 +1,29 @@
+﻿body {
+}
+
+/*TODO: crear una clase para cada capa*/
+.capa-lienzo {
+    position: fixed;  
+    inset: 0;
+    z-index: var(--z-lienzo);
+    width: 100%;
+    height: 100%;
+    display: block;
+}
+
+.capa-textura {
+    position: fixed;
+    inset: 0;
+    z-index: var(--z-textura);
+    width: 100%;
+    height: 100%;
+    background-image: url('../img/paper-texture.png');
+    background-repeat: repeat;
+    pointer-events: none; /*Las capas de decoración no reciben clicks :)*/
+}
+
+.capa-contenido {
+}
+
+.capa-navbar {
+}

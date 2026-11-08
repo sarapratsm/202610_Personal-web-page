@@ -7,9 +7,9 @@
 
 <!--Estuve mirando fotos que hice y vi una que tenía las manos llenas de pintura. Se me ocurrió que podría crear una mancha de pintura cada vez que alguien hiciera click en la web. Debo admitir que para esto sí me está ayudando la IA porque es un salto un poco más grande de nivel xD-->
 <!--Capa 1: El canvas nos da la interactividad-->
-<canvas id="paintCanvas" style="position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; z-index: 0; display: block;"></canvas>
+<canvas id="canvas-lienzo" class="capa-lienzo"></canvas>
 <!--Capa 2: Textura de papel encima del lienzo-->
-<div class="paper-texture position-fixed top-0 start-0 w-100 h-100" style="z-index: 1;"></div>
+<div id="div-paper-texture" class="capa-textura" ></div>
 
 <!--Capa 3: Contenido de la web-->
 <div class="position-relative py-5" style="z-index: 2;">

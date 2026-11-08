@@ -1,3 +1,9 @@
+:root {
+    --z-lienzo: 0;
+    --z-textura: 1;
+    --z-contenido: 2;
+    --z-navbar: 3;
+}
 
 
 html {
@@ -29,11 +35,7 @@ body {
     font-family: 'Playfair Display', serif;
 }
 
-.paper-texture {
-    background-image: radial-gradient(rgba(0, 0, 0, 0.04) 1px, transparent 0);
-    background-size: 24px 24px;
-    pointer-events: none;
-}
+
 
 .form-floating > .form-control-plaintext::placeholder, .form-floating > .form-control::placeholder {
     color: var(--bs-secondary-color);
@@ -42,14 +44,6 @@ body {
 
 .form-floating > .form-control-plaintext:focus::placeholder, .form-floating > .form-control:focus::placeholder {
     text-align: start;
-}
-
-.fondo-rosa {
-    background-color: #f4e2f7;
-}
-
-.fondo-gris {
-    background-color: #f7f7f8;
 }
 
 .card {
