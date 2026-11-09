@@ -34,7 +34,7 @@ function pintarLienzo(ctx, x, y) {
     ellipse(x, y, radiusX, radiusY, rotation, startAngle, endAngle, counterclockwise)
     */
 
-    ctx.fillStyle = "rgba(0, 0, 0, 0.5)";
+    ctx.fillStyle = "rgba(255, 203, 217, 0.5)";
     ctx.beginPath();
     ctx.arc(x, y, radio, 0, 2 * Math.PI);
     ctx.fill();

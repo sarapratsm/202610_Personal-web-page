@@ -40,19 +40,18 @@ Cada paso tiene su checklist específica. Además, antes de darlo por terminado 
 - **Cómo sé que funciona:** en el inspector veo el canvas ocupando toda la ventana, y mi contenido sigue siendo clicable.
 
 **✅ Checklist**
-- [ ] `lienzo.css` está enlazado en el `<head>` de `_Layout.cshtml` con `asp-append-version="true"`.
-- [ ] En el inspector, al seleccionar el canvas, el panel Styles muestra la regla `.capa-lienzo` con `lienzo.css:NN` a la derecha.
-- [ ] El canvas mide lo mismo que la ventana (sin contar la barra de scroll), no 300 × 150.
-- [ ] El canvas tiene `id` (para JavaScript) y `class` (para el estilo), y ningún `style` en línea.
-- [ ] Las variables `--z-*` están dentro de `:root { }` en `site.css`, con su `:` y su `;`.
-- [ ] Las capas usan `var(--z-...)`, no números sueltos.
-- [ ] `inset: 0` está sin `top`/`left` repetidos.
-- [ ] La textura cubre toda la pantalla y tiene `pointer-events: none`.
-- [ ] He decidido si la textura va debajo del lienzo o encima con `mix-blend-mode`, y la pintura (cuando exista) no quedará tapada.
-- [ ] El navbar se ve y sus enlaces navegan (la clase `.capa-navbar` está aplicada en `_Layout.cshtml`).
-- [ ] Los botones y enlaces de la página se pueden pulsar.
-- [ ] `.capa-contenido` tiene su regla en CSS y ya no queda `style="z-index: 2;"` en `Index.cshtml`.
-- [ ] Cierre común hecho.
+- [x] `lienzo.css` está enlazado en el `<head>` de `_Layout.cshtml` con `asp-append-version="true"`.
+- [x] En el inspector, al seleccionar el canvas, el panel Styles muestra la regla `.capa-lienzo` con `lienzo.css:NN` a la derecha.
+- [x] El canvas mide lo mismo que la ventana (sin contar la barra de scroll), no 300 × 150.
+- [x] El canvas tiene `id` (para JavaScript) y `class` (para el estilo), y ningún `style` en línea.
+- [x] Las variables `--z-*` están dentro de `:root { }` en `site.css`, con su `:` y su `;`.
+- [x] Las capas usan `var(--z-...)`, no números sueltos.
+- [x] La textura cubre toda la pantalla y tiene `pointer-events: none`.
+- [x] La textura queda debajo del canvas.
+- [x] El navbar se ve y sus enlaces navegan (la clase `.capa-navbar` está aplicada en `_Layout.cshtml`).
+- [x] Los botones y enlaces de la página se pueden pulsar.
+- [x] `.capa-contenido` tiene su regla en CSS y ya no queda `style="z-index: 2;"` en `Index.cshtml`.
+- [x] Cierre común hecho.
 
 ### Paso 2 · Pintar algo desde JavaScript
 - **Objetivo:** obtener el contexto 2D y dibujar un rectángulo de prueba.
@@ -62,14 +61,14 @@ Cada paso tiene su checklist específica. Además, antes de darlo por terminado 
 - **Cómo sé que funciona:** veo el rectángulo. Si se ve **borroso o estirado**, es normal: lo arreglo en el paso siguiente.
 
 **✅ Checklist**
-- [ ] `lienzo.js` está en `wwwroot/js` y enlazado con `defer` en `_Layout.cshtml`.
-- [ ] En la consola aparece mi `console.log('lienzo cargado')`.
-- [ ] En la pestaña Network, `lienzo.js` sale con Status 200.
-- [ ] El `id` que busco en JS es exactamente el del HTML (`canvas-lienzo`).
-- [ ] Compruebo que `getElementById` no devuelve `null` antes de usar el canvas.
-- [ ] Uso `const` para lo que no reasigno (y no `var`).
-- [ ] Los nombres de variables son claros y coherentes (todos en español o todos en inglés).
-- [ ] El rectángulo se ve. Si sale deformado, sé explicar por qué (tamaño CSS ≠ tamaño interno).
+- [x] `lienzo.js` está en `wwwroot/js` y enlazado con `defer` en `_Layout.cshtml`.
+- [x] En la consola aparece mi `console.log('lienzo cargado')`.
+- [x] En la pestaña Network, `lienzo.js` sale con Status 200.
+- [x] El `id` que busco en JS es exactamente el del HTML (`canvas-lienzo`).
+- [x] Compruebo que `getElementById` no devuelve `null` antes de usar el canvas.
+- [x] Uso `const` para lo que no reasigno (y no `var`).
+- [x] Los nombres de variables son claros y coherentes (todos en español o todos en inglés).
+- [x] El rectángulo se ve. Si sale deformado, sé explicar por qué (tamaño CSS ≠ tamaño interno).
 - [ ] Cierre común hecho.
 
 ### Paso 3 · Que el canvas tenga el tamaño correcto
