@@ -1,6 +1,6 @@
 :root {
-    --z-lienzo: 0;
-    --z-textura: 1;
+    --z-textura: 0;
+    --z-lienzo: 1;
     --z-contenido: 2;
     --z-navbar: 3;
 }

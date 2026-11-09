@@ -23,7 +23,10 @@
 }
 
 .capa-contenido {
+    position: relative;
+    z-index: var(--z-contenido);
 }
 
 .capa-navbar {
+    z-index: var(--z-navbar);
 }
