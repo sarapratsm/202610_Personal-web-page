@@ -17,7 +17,7 @@
     z-index: var(--z-textura);
     width: 100%;
     height: 100%;
-    background-image: url('../img/paper-texture.png');
+    background-image: url('../img/paper-texture-3.png');
     background-repeat: repeat;
     pointer-events: none; /*Las capas de decoración no reciben clicks :)*/
 }
