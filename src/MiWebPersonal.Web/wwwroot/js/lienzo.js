@@ -8,6 +8,8 @@ function iniciarLienzo() {
         return;
     } else {
         console.log("[DEBUG] Se ha encontrado el lienzo: ", lienzo);
+        corregirDimensiones()
+       
     }
 
     const lienzoCtx = lienzo.getContext("2d");
@@ -19,6 +21,16 @@ function iniciarLienzo() {
         console.log("[DEBUG] Se ha encontrado el contexto del lienzo: ", lienzoCtx);
         return lienzoCtx;
     }
+}
+
+function corregirDimensiones() {
+    console.log("[DEBUG] Dimensiones del lienzo: ", lienzo.width, 'x', lienzo.height); //La cuadrícula interna de píxeles sobre la que se dibuja ~=resolucion de la foto
+    console.log("[DEBUG] Dimensiones del lienzo cliente (cómo lo dibuja el navegador): ", lienzo.clientWidth, 'x', lienzo.clientHeight); //Cuánto ocupa en pantalla, en píxeles CSS ~=marco de la foto
+    console.log("[DEBUG] DevicePixelRatio:", window.devicePixelRatio) //Cuántos píxeles físicos de tu monitor hay por cada píxel CSS
+
+    lienzo.width = lienzo.clientWidth;
+    lienzo.height = lienzo.clientHeight;
+
 }
 
 function pintarLienzo(ctx, x, y) {
