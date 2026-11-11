@@ -79,12 +79,12 @@ Cada paso tiene su checklist específica. Además, antes de darlo por terminado 
 - **Cómo sé que funciona:** el rectángulo del paso 2 queda con bordes nítidos y mide exactamente lo que le pido.
 
 **✅ Checklist**
-- [ ] En la consola, `canvas.width` es `innerWidth × devicePixelRatio` (y `canvas.height`, igual).
-- [ ] Asigno el tamaño **antes** de escalar el contexto.
+- [x] En la consola, `canvas.width` es `innerWidth × devicePixelRatio` (y `canvas.height`, igual).
+- [x] Asigno el tamaño **antes** de escalar el contexto.
 - [ ] Un rectángulo de 200 × 100 mide 200 × 100 píxeles CSS en pantalla.
 - [ ] Los bordes salen nítidos, también con el zoom del navegador al 150 %.
-- [ ] No he tocado el tamaño CSS del canvas: lo sigue controlando `lienzo.css`.
-- [ ] El tamaño se calcula en una función con nombre (`ajustarTamano()`), no suelto.
+- [x] No he tocado el tamaño CSS del canvas: lo sigue controlando `lienzo.css`.
+- [x] El tamaño se calcula en una función con nombre (`ajustarTamano()`), no suelto.
 - [ ] Sé explicar qué es `devicePixelRatio` y por qué una pantalla retina lo necesita.
 - [ ] Cierre común hecho.
 
