@@ -67,7 +67,7 @@ function iniciarLienzo() {
     //Ajustar
     corregirDimensiones(lienzo)
 
-    //Añadir listener
+    //Añadir listener de pintura
     lienzo.addEventListener("click", (evento) => {
         const rect = lienzo.getBoundingClientRect();
         const x = evento.clientX - rect.left;
@@ -75,6 +75,11 @@ function iniciarLienzo() {
 
         pintarLienzo(ctx, x, y);
         log(" Estic pintant!! :3")
+    })
+
+    //Añadir listener de resize
+    window.addEventListener("resize", (evento) => {
+        corregirDimensiones(lienzo);
     })
 
 
