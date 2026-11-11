@@ -81,8 +81,12 @@ function iniciarLienzo() {
     })
 
     //Añadir listener de resize
-    //obj.addEventListener("evento", funcion)
+    //obj.addEventListener("evento", (evento) => { ... })
     window.addEventListener("resize", () => corregirDimensiones(lienzo));
+
+    //obj.addEventListener("evento", funcion) no funciona aquí porque no necesitamos que la funcion se ejecute inmediatamente, sino que se ejecute cuando ocurra el evento (listener).
+
+
     //Devolver
     //Ya no necesita devolver nada 
 }
