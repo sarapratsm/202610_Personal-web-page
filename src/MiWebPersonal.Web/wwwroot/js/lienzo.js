@@ -8,6 +8,10 @@ function log(message) {
         console.log("[DEBUG]", message);
 }
 
+function random(number) {
+    return Math.floor(Math.random() * (number + 1));
+}
+
 function corregirDimensiones(lienzo) {
     mostrarDimensiones(lienzo);
     /*Porque asignar lienzo.width o lienzo.height reinicia el canvas por completo, aunque le des el mismo valor que ya tenía.*/
@@ -34,19 +38,15 @@ function mostrarDimensiones(lienzo) {
 }
 
 function pintarLienzo(ctx, x, y) {
-    const radio = 100;
+    const radio = 25;
+    let rndCol = `rgb(${random(255)} ${random(255)} ${random(255)} / 0.5)`; //https://developer.mozilla.org/es/docs/Learn_web_development/Core/Scripting/Events
     /*
     Documentación: 
     https://developer.mozilla.org/es/docs/Web/API/Canvas_API/Tutorial/Drawing_shapes 
     https://developer.mozilla.org/es/docs/Web/API/CanvasRenderingContext2D
     */
 
-    /*
-    arc(x, y, radius, startAngle, endAngle, counterclockwise)
-    ellipse(x, y, radiusX, radiusY, rotation, startAngle, endAngle, counterclockwise)
-    */
-
-    ctx.fillStyle = "rgba(255, 203, 217, 0.5)";
+    ctx.fillStyle = rndCol;
     ctx.beginPath();
     ctx.arc(x, y, radio, 0, 2 * Math.PI);
     ctx.fill();
@@ -70,6 +70,7 @@ function iniciarLienzo() {
     corregirDimensiones(lienzo)
 
     //Añadir listener de pintura
+    //obj.addEventListener("evento", (evento) => { ... })
     lienzo.addEventListener("click", (evento) => {
         const rect = lienzo.getBoundingClientRect();
         const x = evento.clientX - rect.left;
@@ -80,11 +81,8 @@ function iniciarLienzo() {
     })
 
     //Añadir listener de resize
-    window.addEventListener("resize", () => {
-        corregirDimensiones(lienzo);
-    })
-
-
+    //obj.addEventListener("evento", funcion)
+    window.addEventListener("resize", () => corregirDimensiones(lienzo));
     //Devolver
     //Ya no necesita devolver nada 
 }
