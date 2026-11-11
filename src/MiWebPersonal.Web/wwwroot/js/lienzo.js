@@ -9,10 +9,12 @@ function log(message) {
 }
 
 function corregirDimensiones(lienzo) {
-    mostrarDimensiones(lienzo)
+    mostrarDimensiones(lienzo);
+    /*Porque asignar lienzo.width o lienzo.height reinicia el canvas por completo, aunque le des el mismo valor que ya tenía.*/
+    /*Por este motivo, al corregir las dimensiones, se borra el contenido del canvas.*/
     lienzo.width = lienzo.clientWidth;
     lienzo.height = lienzo.clientHeight;
-    mostrarDimensiones(lienzo)
+    mostrarDimensiones(lienzo);
 }
 
 function mostrarDimensiones(lienzo) {
@@ -20,9 +22,9 @@ function mostrarDimensiones(lienzo) {
         //No utilitzo la funció log aqui per no haver de comprovar el if(DEBUG) a cada linea...
         console.log("------------")
         console.log("[DEBUG] Dimensiones del lienzo: ", lienzo.width, 'x', lienzo.height); //La cuadrícula interna de píxeles sobre la que se dibuja ~=resolucion de la foto
-        console.log("[DEBUG] Ratio: ", lienzo.width / lienzo.height)
+        console.log("[DEBUG] Ratio: ", lienzo.width / lienzo.height);
         console.log("[DEBUG] Dimensiones del lienzo cliente (cómo lo dibuja el navegador): ", lienzo.clientWidth, 'x', lienzo.clientHeight); //Cuánto ocupa en pantalla, en píxeles CSS ~=marco de la foto
-        console.log("[DEBUG] Ratio: ", lienzo.clientWidth / lienzo.clientHeight)
+        console.log("[DEBUG] Ratio: ", lienzo.clientWidth / lienzo.clientHeight);
         //Las dos ratios deben coincidir para que las formas no salgan deformadas.
         console.log("[DEBUG] Dimensiones de la página: ", document.documentElement.clientWidth
             , 'x', document.documentElement.clientHeight);
@@ -32,7 +34,7 @@ function mostrarDimensiones(lienzo) {
 }
 
 function pintarLienzo(ctx, x, y) {
-    const radio = 100
+    const radio = 100;
     /*
     Documentación: 
     https://developer.mozilla.org/es/docs/Web/API/Canvas_API/Tutorial/Drawing_shapes 
@@ -56,12 +58,12 @@ function iniciarLienzo() {
     //Buscar y validar 
     const lienzo = document.getElementById("canvas-lienzo");
     if (!lienzo) {
-        console.error("No se ha encontrado el lienzo")
+        console.error("No se ha encontrado el lienzo");
         return;
     }
     const ctx = lienzo.getContext("2d");
     if (!ctx) {
-        console.error("No se ha encontrado el contexto")
+        console.error("No se ha encontrado el contexto");
         return;
     }
     //Ajustar
@@ -74,7 +76,7 @@ function iniciarLienzo() {
         const y = evento.clientY - rect.top;
 
         pintarLienzo(ctx, x, y);
-        log(" Estic pintant!! :3")
+        log(" Estic pintant!! :3");
     })
 
     //Añadir listener de resize
