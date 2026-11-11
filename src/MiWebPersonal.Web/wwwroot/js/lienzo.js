@@ -57,12 +57,12 @@ function iniciarLienzo() {
     const lienzo = document.getElementById("canvas-lienzo");
     if (!lienzo) {
         console.error("No se ha encontrado el lienzo")
-        return null;
+        return;
     }
     const ctx = lienzo.getContext("2d");
     if (!ctx) {
         console.error("No se ha encontrado el contexto")
-        return null;
+        return;
     }
     //Ajustar
     corregirDimensiones(lienzo)
@@ -78,13 +78,13 @@ function iniciarLienzo() {
     })
 
     //Añadir listener de resize
-    window.addEventListener("resize", (evento) => {
+    window.addEventListener("resize", () => {
         corregirDimensiones(lienzo);
     })
 
 
     //Devolver
-    //return ctx; //Nadie lo necesita ya
+    //Ya no necesita devolver nada 
 }
 
 //=========LINEA DE ARRANQUE=========
