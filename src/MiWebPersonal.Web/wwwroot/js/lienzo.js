@@ -112,13 +112,10 @@ function trazarCurva(ctx, puntos) {
  * @param {CanvasRenderingContext2D} ctx - El contexto del canvas.
  * @param {number} x - La coordenada x del centro de la forma.
  * @param {number} y - La coordenada y del centro de la forma.
+ * @see https://developer.mozilla.org/es/docs/Web/API/Canvas_API/Tutorial/Drawing_shapes
+ * @see https://developer.mozilla.org/es/docs/Web/API/CanvasRenderingContext2D
  */
 function pintarLienzo(ctx, x, y) {
-    /*
-    Documentación: 
-    https://developer.mozilla.org/es/docs/Web/API/Canvas_API/Tutorial/Drawing_shapes 
-    https://developer.mozilla.org/es/docs/Web/API/CanvasRenderingContext2D
-    */
     const radio = 40;
     const numeroPuntos = 12;
     const rndCol = `rgb(${random(255)} ${random(255)} ${random(255)} / 0.5)`; //https://developer.mozilla.org/es/docs/Learn_web_development/Core/Scripting/Events
