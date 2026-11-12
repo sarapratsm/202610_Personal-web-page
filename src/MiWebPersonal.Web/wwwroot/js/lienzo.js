@@ -57,6 +57,26 @@ function crearPuntos(cx, cy, radio, n) {
     return puntos;
 }
 
+function trazarCurva(ctx, puntos) {
+    if (!puntos || puntos.length === 0) return;
+
+    const pActual = puntos[0];
+    ctx.beginPath();
+    ctx.moveTo(pActual.x, pActual.y); //Mover el cursor a la posición del primer punto
+
+    for (let i = 0; i < puntos.length; i++) {
+        let pActual = puntos[i];
+        let pSiguiente = puntos[(i + 1) % puntos.length]; //El siguiente punto, o el primero si estamos en el último punto.
+
+        //Punto medio entre los dos
+        let pMedioX = (pActual.x + pSiguiente.x) / 2;
+        let pMedioY = (pActual.y + pSiguiente.y) / 2;
+
+        ctx.quadraticCurveTo(pActual.x, pActual.y, pMedioX, pMedioY); //Dibujar una curva cuadrática desde el punto actual hasta el punto medio, usando el punto actual como control.
+    }
+    ctx.closePath();
+}
+
 
 function pintarLienzo(ctx, x, y) {
     /*
@@ -65,16 +85,12 @@ function pintarLienzo(ctx, x, y) {
     https://developer.mozilla.org/es/docs/Web/API/CanvasRenderingContext2D
     */
     const radio = 40;
-    const numeroPuntos = 10;
+    const numeroPuntos = 12;
     const rndCol = `rgb(${random(255)} ${random(255)} ${random(255)} / 0.5)`; //https://developer.mozilla.org/es/docs/Learn_web_development/Core/Scripting/Events
     const puntos = crearPuntos(x, y, radio, numeroPuntos);
 
     ctx.fillStyle = rndCol;
-    ctx.beginPath();
-    for (let i = 0; i < puntos.length; i++) {
-        const punto = puntos[i];
-        ctx.lineTo(punto.x, punto.y);
-    }
+    trazarCurva(ctx, puntos);
     ctx.fill();
 }
 
