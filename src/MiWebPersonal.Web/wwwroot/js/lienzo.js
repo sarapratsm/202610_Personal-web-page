@@ -70,7 +70,7 @@ function crearPuntos(cx, cy, radio, n) {
     //Usaremos coordenadas polares para crear los puntos de manera uniforme en un círculo.
     //x = cx + cos(ángulo) * radio
     //y = cy + sin(ángulo) * radio
-    const variacion = 25; //Variación aleatoria del radio para que no queden todos los puntos exactamente en el mismo círculo.
+    const variacion = 10; //Variación aleatoria del radio para que no queden todos los puntos exactamente en el mismo círculo.
     let puntos = []
     for (let i = 0; i < n; i++) {
         const angle = (i / n) * 2 * Math.PI;
@@ -117,12 +117,13 @@ function trazarCurva(ctx, puntos) {
  * @see https://developer.mozilla.org/es/docs/Learn_web_development/Core/Scripting/Events
  */
 function pintarLienzo(ctx, x, y) {
-    const radio = 40;
+    const radio = random(40);
     const numeroPuntos = 12;
-    const rndCol = `rgb(${random(255)} ${random(255)} ${random(255)} / 0.5)`;
+    const rndCol = `rgb(${random(255)} ${random(255)} ${random(255)} / 0.3)`;
     const puntos = crearPuntos(x, y, radio, numeroPuntos);
 
     ctx.fillStyle = rndCol;
+    ctx.globalCompositeOperation = 'multiply'; //Para que los colores se mezclen al superponerse
     trazarCurva(ctx, puntos);
     ctx.fill();
 }
