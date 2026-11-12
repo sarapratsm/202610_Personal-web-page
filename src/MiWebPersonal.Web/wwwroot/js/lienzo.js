@@ -117,7 +117,7 @@ function trazarCurva(ctx, puntos) {
  * @see https://developer.mozilla.org/es/docs/Learn_web_development/Core/Scripting/Events
  */
 function pintarLienzo(ctx, x, y) {
-    const radio = random(40);
+    const radio = Math.floor(Math.random() * 20) + 20; //Mínim 20, màxim 40
     const numeroPuntos = 12;
     const opacidad = 0.3;
     const rndCol = `rgb(${random(255)} ${random(255)} ${random(255)} / ${opacidad})`;
