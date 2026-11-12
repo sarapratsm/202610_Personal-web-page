@@ -71,7 +71,9 @@ function iniciarLienzo() {
 
     //Añadir listener de pintura
     //obj.addEventListener("evento", (evento) => { ... })
-    lienzo.addEventListener("click", (evento) => {
+    document.addEventListener("pointerdown", (evento) => {
+        //Ponemos el listener en el documento para que cualquier click en cualquier lugar del documento active trigger del listener
+        //Además cambiamos click por pointerdown para que se sienta más fluido.
         const rect = lienzo.getBoundingClientRect();
         const x = evento.clientX - rect.left;
         const y = evento.clientY - rect.top;
@@ -83,8 +85,6 @@ function iniciarLienzo() {
     //Añadir listener de resize
     //obj.addEventListener("evento", (evento) => { ... })
     window.addEventListener("resize", () => corregirDimensiones(lienzo));
-
-    //obj.addEventListener("evento", funcion) no funciona aquí porque no necesitamos que la funcion se ejecute inmediatamente, sino que se ejecute cuando ocurra el evento (listener).
 
 
     //Devolver
