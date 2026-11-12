@@ -12,33 +12,37 @@ function random(number) {
     return Math.floor(Math.random() * (number + 1));
 }
 
-function corregirDimensiones(lienzo) {
+function corregirDimensiones(lienzo, ctx) {
     mostrarDimensiones(lienzo);
+    const dpr = window.devicePixelRatio || 1;
     /*Porque asignar lienzo.width o lienzo.height reinicia el canvas por completo, aunque le des el mismo valor que ya tenía.*/
     /*Por este motivo, al corregir las dimensiones, se borra el contenido del canvas.*/
-    lienzo.width = lienzo.clientWidth;
-    lienzo.height = lienzo.clientHeight;
+    lienzo.width = lienzo.clientWidth * dpr;
+    lienzo.height = lienzo.clientHeight * dpr;
+    ctx.scale(dpr, dpr);
     mostrarDimensiones(lienzo);
 }
 
 function mostrarDimensiones(lienzo) {
     if (DEBUG) {
-        //No utilitzo la funció log aqui per no haver de comprovar el if(DEBUG) a cada linea...
-        console.log("------------")
-        console.log("[DEBUG] Dimensiones del lienzo: ", lienzo.width, 'x', lienzo.height); //La cuadrícula interna de píxeles sobre la que se dibuja ~=resolucion de la foto
-        console.log("[DEBUG] Ratio: ", lienzo.width / lienzo.height);
-        console.log("[DEBUG] Dimensiones del lienzo cliente (cómo lo dibuja el navegador): ", lienzo.clientWidth, 'x', lienzo.clientHeight); //Cuánto ocupa en pantalla, en píxeles CSS ~=marco de la foto
-        console.log("[DEBUG] Ratio: ", lienzo.clientWidth / lienzo.clientHeight);
-        //Las dos ratios deben coincidir para que las formas no salgan deformadas.
-        console.log("[DEBUG] Dimensiones de la página: ", document.documentElement.clientWidth
-            , 'x', document.documentElement.clientHeight);
-        console.log("[DEBUG] DevicePixelRatio:", window.devicePixelRatio) //Cuántos píxeles físicos de tu monitor hay por cada píxel CSS
-        console.log("------------");
+        if (DEBUG) {
+            //No utilitzo la funció log aqui per no haver de comprovar el if(DEBUG) a cada linea...
+            console.log("------------")
+            console.log("[DEBUG] Dimensiones del lienzo: ", lienzo.width, 'x', lienzo.height); //La cuadrícula interna de píxeles sobre la que se dibuja ~=resolucion de la foto
+            console.log("[DEBUG] Ratio: ", lienzo.width / lienzo.height);
+            console.log("[DEBUG] Dimensiones del lienzo cliente (cómo lo dibuja el navegador): ", lienzo.clientWidth, 'x', lienzo.clientHeight); //Cuánto ocupa en pantalla, en píxeles CSS ~=marco de la foto
+            console.log("[DEBUG] Ratio: ", lienzo.clientWidth / lienzo.clientHeight);
+            //Las dos ratios deben coincidir para que las formas no salgan deformadas.
+            console.log("[DEBUG] Dimensiones de la página: ", document.documentElement.clientWidth
+                , 'x', document.documentElement.clientHeight);
+            console.log("[DEBUG] DevicePixelRatio:", window.devicePixelRatio) //Cuántos píxeles físicos de tu monitor hay por cada píxel CSS
+            console.log("------------");
+        }
     }
 }
 
 function pintarLienzo(ctx, x, y) {
-    const radio = 25;
+    const radio = 40;
     let rndCol = `rgb(${random(255)} ${random(255)} ${random(255)} / 0.5)`; //https://developer.mozilla.org/es/docs/Learn_web_development/Core/Scripting/Events
     /*
     Documentación: 
@@ -51,6 +55,7 @@ function pintarLienzo(ctx, x, y) {
     ctx.arc(x, y, radio, 0, 2 * Math.PI);
     ctx.fill();
 }
+
 
 
 //=========FUNCIÓN PRINCIPAL=========
@@ -67,7 +72,7 @@ function iniciarLienzo() {
         return;
     }
     //Ajustar
-    corregirDimensiones(lienzo)
+    corregirDimensiones(lienzo, ctx)
 
     //Añadir listener de pintura
     //obj.addEventListener("evento", (evento) => { ... })
@@ -84,7 +89,7 @@ function iniciarLienzo() {
 
     //Añadir listener de resize
     //obj.addEventListener("evento", (evento) => { ... })
-    window.addEventListener("resize", () => corregirDimensiones(lienzo));
+    window.addEventListener("resize", () => corregirDimensiones(lienzo, ctx));
 
 
     //Devolver
