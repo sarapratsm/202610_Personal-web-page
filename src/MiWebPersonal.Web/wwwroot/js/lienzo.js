@@ -119,7 +119,8 @@ function trazarCurva(ctx, puntos) {
 function pintarLienzo(ctx, x, y) {
     const radio = random(40);
     const numeroPuntos = 12;
-    const rndCol = `rgb(${random(255)} ${random(255)} ${random(255)} / 0.3)`;
+    const opacidad = 0.3;
+    const rndCol = `rgb(${random(255)} ${random(255)} ${random(255)} / ${opacidad})`;
     const puntos = crearPuntos(x, y, radio, numeroPuntos);
 
     ctx.fillStyle = rndCol;
