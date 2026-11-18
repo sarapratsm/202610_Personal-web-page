@@ -1,13 +1,17 @@
 ﻿//Script de lienzo de la página web personal. Cada click crea pintura en el liezo :3
 //=========CONSTANTES=========
 const DEBUG = true;
+
+//Constantes de eventos
+const BOTON_PRINCIPAL = 0; //El botón principal del ratón es el izquierdo, el secundario es el derecho y el central es la rueda. https://developer.mozilla.org/en-US/docs/Web/API/MouseEvent/button
+
+//Constantes de configuración
 const RADIO_MINIMO = 20;
 const RADIO_MAXIMO = 40;
-const BOTON_PRINCIPAL = 0; //El botón principal del ratón es el izquierdo, el secundario es el derecho y el central es la rueda. https://developer.mozilla.org/en-US/docs/Web/API/MouseEvent/button
+const VARIACION_RADIO = 10; //Variación aleatoria del radio para que no queden todos los puntos exactamente en el mismo círculo. Cuanto más alto, más irregular será la forma de la pintura.
 const NUMERO_PUNTOS = 10; //Número de puntos que se crean para formar la curva. Cuantos más puntos, más suave será la curva, pero más costoso será dibujarla.
 const OPACIDAD = 0.3; //Opacidad de la pintura. Cuanto más baja, más transparente será la pintura y más se mezclará con los colores de fondo y con otras pinturas.
 const COMPOSICION = 'multiply'; //Modo de composición de la pintura. https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/globalCompositeOperation
-const VARIACION_RADIO = 10; //Variación aleatoria del radio para que no queden todos los puntos exactamente en el mismo círculo. Cuanto más alto, más irregular será la forma de la pintura.
 
 //=========FUNCIONES AUXILIARES=========
 /**
