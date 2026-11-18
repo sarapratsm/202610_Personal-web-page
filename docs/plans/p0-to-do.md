@@ -4,4 +4,4 @@
 - [ ] Nombre de pestaña personalizado
 
 ## Advanced TODOs
-- [ ] La web es un lienzo en blanco y cada click genera una mancha de pintura con un color aleatorio y una rotación aleatoria.
+- [ ] Lienzo interactivo con manchas de pintura. Su plan paso a paso está en [p2-lienzo-aprendizaje.md](p2-lienzo-aprendizaje.md).

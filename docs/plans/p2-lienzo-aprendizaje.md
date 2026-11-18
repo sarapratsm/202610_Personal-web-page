@@ -354,7 +354,8 @@ Cada paso tiene su checklist específica. Además, antes de darlo por terminado 
 - [ ] Cierre común hecho.
 
 ### Paso 18 · Comparar con la referencia
-- Leer por fin el prototipo y la versión de Claude (guardada como "solucionario") y anotar qué haría distinto cada uno y por qué.
+- **Todavía no existe ningún solucionario, y es a propósito.** Cuando termine los pasos 1-17, le pido a Claude que genere su versión del lienzo y la guardo en `docs/references/`. Así no la veo antes de tiempo.
+- Leer por fin el prototipo y la versión de Claude (el "solucionario") y anotar qué haría distinto cada uno y por qué.
 - Si hay algo mejor en el solucionario, pregunto por qué antes de adoptarlo.
 
 **✅ Checklist**

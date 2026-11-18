@@ -6,6 +6,8 @@
 - Mapeo de objetos: Pendiente de implementar (Mapperly o similar)
 - Base de datos: SQLite en desarrollo y PostgreSQL para producción (planificado)
 - Estilos: Bootstrap + CSS propio en `wwwroot/css/site.css`
+- Lienzo interactivo: Canvas 2D con JavaScript nativo, sin dependencias externas (`wwwroot/js/lienzo.js` y `wwwroot/css/lienzo.css`)
+- Autenticación del panel de administración: ASP.NET Core Identity (o cookies), planificado para Fase 2
 - Arquitectura de software: Capas simplificadas (Core, Infrastructure, Web) con separación de responsabilidades
 
 ## Tooling y Configuración
