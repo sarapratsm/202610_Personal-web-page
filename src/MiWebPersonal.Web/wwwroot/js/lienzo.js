@@ -4,6 +4,10 @@ const DEBUG = true;
 const RADIO_MINIMO = 20;
 const RADIO_MAXIMO = 40;
 const BOTON_PRINCIPAL = 0; //El botón principal del ratón es el izquierdo, el secundario es el derecho y el central es la rueda. https://developer.mozilla.org/en-US/docs/Web/API/MouseEvent/button
+const NUMERO_PUNTOS = 10; //Número de puntos que se crean para formar la curva. Cuantos más puntos, más suave será la curva, pero más costoso será dibujarla.
+const OPACIDAD = 0.3; //Opacidad de la pintura. Cuanto más baja, más transparente será la pintura y más se mezclará con los colores de fondo y con otras pinturas.
+const COMPOSICION = 'multiply'; //Modo de composición de la pintura. https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/globalCompositeOperation
+const VARIACION_RADIO = 10; //Variación aleatoria del radio para que no queden todos los puntos exactamente en el mismo círculo. Cuanto más alto, más irregular será la forma de la pintura.
 
 //=========FUNCIONES AUXILIARES=========
 /**
@@ -73,13 +77,12 @@ function crearPuntos(cx, cy, radio, n) {
     //Usaremos coordenadas polares para crear los puntos de manera uniforme en un círculo.
     //x = cx + cos(ángulo) * radio
     //y = cy + sin(ángulo) * radio
-    const variacion = 10; //Variación aleatoria del radio para que no queden todos los puntos exactamente en el mismo círculo.
     let puntos = []
     for (let i = 0; i < n; i++) {
         const angle = (i / n) * 2 * Math.PI;
         puntos[i] = {
-            x: cx + Math.cos(angle) * (radio + random(variacion)),
-            y: cy + Math.sin(angle) * (radio + random(variacion))
+            x: cx + Math.cos(angle) * (radio + random(VARIACION_RADIO)),
+            y: cy + Math.sin(angle) * (radio + random(VARIACION_RADIO))
         };
     }
     return puntos;
@@ -120,14 +123,12 @@ function trazarCurva(ctx, puntos) {
  * @see https://developer.mozilla.org/es/docs/Learn_web_development/Core/Scripting/Events
  */
 function pintarLienzo(ctx, x, y) {
-    const radio = Math.floor(Math.random() * (RADIO_MAXIMO - RADIO_MINIMO + 1)) + RADIO_MINIMO; //Mínim 20, màxim 40
-    const numeroPuntos = 10;
-    const opacidad = 0.3;
-    const rndCol = `rgb(${random(255)} ${random(255)} ${random(255)} / ${opacidad})`;
-    const puntos = crearPuntos(x, y, radio, numeroPuntos);
+    const radio = Math.floor(Math.random() * (RADIO_MAXIMO - RADIO_MINIMO + 1)) + RADIO_MINIMO;
+    const rndCol = `rgb(${random(255)} ${random(255)} ${random(255)} / ${OPACIDAD})`;
+    const puntos = crearPuntos(x, y, radio, NUMERO_PUNTOS);
 
     ctx.fillStyle = rndCol;
-    ctx.globalCompositeOperation = 'multiply'; //Para que los colores se mezclen al superponerse
+    ctx.globalCompositeOperation = COMPOSICION; //Para que los colores se mezclen al superponerse
     trazarCurva(ctx, puntos);
     ctx.fill();
 }

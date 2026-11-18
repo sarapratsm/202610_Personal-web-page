@@ -21,7 +21,7 @@
 **Lo que me salté y conviene cerrar:**
 - ✅ **Paso 5:** decidido que los clics sobre enlaces y botones **también pintan**. No hace falta código.
 - ⚠ **Paso 9:** falta `save()` / `restore()`. Ahora `globalCompositeOperation` se queda en `'multiply'` para siempre y afectará a todo lo que se dibuje después (el borde del paso 10, por ejemplo).
-- 🟡 **Paso 4:** el radio y el color tienen números mágicos dentro de `pintarLienzo`. El botón ya está decidido (solo el principal). Mejoras pendientes del filtro: pasarlo a *early return* **antes** de calcular `rect`, `x` e `y`, y nombrar el `0` con una constante (`BOTON_PRINCIPAL`).
+- ✅ **Paso 4:** radio, puntos, opacidad, variación y composición están en constantes al principio del fichero (`RADIO_MINIMO`, `NUMERO_PUNTOS`...). El filtro del botón es un *early return* con `BOTON_PRINCIPAL`, antes de calcular `rect`, `x` e `y`. Quedan sin marcar las pruebas de navegador de su checklist (esquinas, toque en modo móvil, scroll).
 - 🟡 **Paso 6:** uso un RGB totalmente aleatorio en vez de una paleta, y mi `random(number)` no recibe mínimo y máximo.
 - ⏭ **Paso 3:** no hice la prueba del rectángulo de 200 × 100. Se puede comprobar igual con la mancha.
 
@@ -119,7 +119,7 @@ Cada paso tiene su checklist específica. Además, antes de darlo por terminado 
 - **Qué hago:** borrar el rectángulo de prueba. Escuchar `pointerdown` en `document` y dibujar un círculo de 40 px.
 - **Pista:** pregunta por qué `pointerdown` es mejor que `click` + `touchstart` (investiga qué pasa en un móvil con los dos).
 - **Cómo sé que funciona:** cada clic o toque pone un círculo justo bajo el puntero. Pruébalo con el modo móvil de F12.
-- ⏭ **Nota:** me salté el círculo y pinté directamente la mancha irregular. El listener ya está hecho; quedan los puntos marcados con ⚠ abajo.
+- ⏭ **Nota:** me salté el círculo y pinté directamente la mancha irregular. El listener está hecho y los números mágicos ya están en constantes; solo quedan por marcar las pruebas de navegador de la checklist.
 
 **✅ Checklist**
 - [x] Hay **un solo** listener, `pointerdown`, y no `click` + `touchstart`.
@@ -127,9 +127,9 @@ Cada paso tiene su checklist específica. Además, antes de darlo por terminado 
 - [ ] En el modo dispositivo de F12, un toque pinta **un** círculo (no dos).
 - [ ] Con la página con scroll, el círculo sigue saliendo bajo el puntero.
 - [x] El listener solo llama a una función `salpicar(x, y)` que dibuja; no lleva todo el dibujo dentro. *(En mi código es `pintarLienzo(ctx, x, y)`.)*
-- [ ] ⚠ El radio está en una constante con nombre, sin números mágicos repartidos. *(Ahora sale de `Math.floor(Math.random() * 20) + 20` dentro de `pintarLienzo`.)*
+- [x] El radio está en constantes con nombre, sin números mágicos repartidos. *(`RADIO_MINIMO` y `RADIO_MAXIMO`; el rango da de 20 a 40 incluidos.)*
 - [x] He decidido si el botón derecho o central debe pintar (`event.button`). *(Decisión 2026-11-18: solo pinta el principal, `button === 0`.)*
-- [ ] El filtro del botón usa *early return* y una constante con nombre en vez del `0` suelto.
+- [x] El filtro del botón usa *early return* y una constante con nombre en vez del `0` suelto. *(`if (evento.button !== BOTON_PRINCIPAL) return;`)*
 - [ ] En modo dispositivo de F12, un toque con el dedo pinta (en `pointerdown` táctil, `button` vale `0`).
 - [ ] He decidido qué hacer con el menú contextual del clic derecho (dejarlo o suprimirlo con `contextmenu` + `preventDefault()`).
 - [ ] Sé explicar por qué `evento.button` está disponible en un `PointerEvent` (herencia: `PointerEvent` → `MouseEvent`).
@@ -386,7 +386,7 @@ Cada paso tiene su checklist específica. Además, antes de darlo por terminado 
 | 1    | ✅    |       | Canvas, textura y capas con variables `--z-*`. |
 | 2    | ✅    |       | Script enlazado con `defer`, comprobación de `null`. |
 | 3    | 🟡    |       | `corregirDimensiones` con `devicePixelRatio`. Saltada la prueba del rectángulo 200 × 100. |
-| 4    | 🟡    | 2026-11-18 | Saltado el círculo. `pointerdown` y filtro `button === 0` hechos. Aprendí la herencia `Event` → `UIEvent` → `MouseEvent` → `PointerEvent` (por eso `evento.button` funciona), `instanceof` y el *early return*; tengo una guía en mi repo de tutoriales (`desarrollo-web/eventos-del-dom`). Faltan constante del radio, constante del botón y pasar el filtro a *early return*. |
+| 4    | ✅    | 2026-11-18 | Saltado el círculo. `pointerdown` y filtro `button === 0` hechos. Aprendí la herencia `Event` → `UIEvent` → `MouseEvent` → `PointerEvent` (por eso `evento.button` funciona), `instanceof` y el *early return*; tengo una guía en mi repo de tutoriales (`desarrollo-web/eventos-del-dom`). Constantes del radio, puntos, opacidad, variación, composición y botón hechas, y filtro con *early return*. Pendientes las pruebas en navegador (esquinas, toque en F12, scroll). |
 | 5    | ✅    |       | Decisión de diseño: pintar siempre, también sobre enlaces y botones. Sin código. |
 | 6    | 🟡    |       | RGB aleatorio en vez de paleta. Falta `numeroAleatorio(min, max)`. |
 | 7    | ✅    |       | `crearPuntos` solo calcula. Falta comprobar `puntos.length`. |
