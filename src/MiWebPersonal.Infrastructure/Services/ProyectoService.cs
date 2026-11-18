@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using MiWebPersonal.Core.Interfaces;
+﻿using MiWebPersonal.Core.Interfaces;
 using MiWebPersonal.Core.Models;
 
 namespace MiWebPersonal.Infrastructure.Services
