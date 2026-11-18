@@ -39,7 +39,7 @@ function random(number) {
  */
 function corregirDimensiones(lienzo, ctx) {
     mostrarDimensiones(lienzo);
-    const dpr = window.devicePixelRatio || 1;
+    const dpr = window.devicePixelRatio || 1; /*El devicePixelRatio es la relación entre los píxeles físicos del dispositivo y los píxeles CSS. Por ejemplo, en un monitor Retina, un píxel CSS puede corresponder a varios píxeles físicos, lo que hace que las imágenes se vean más nítidas.*/
     /*Porque asignar lienzo.width o lienzo.height reinicia el canvas por completo, aunque le des el mismo valor que ya tenía.*/
     /*Por este motivo, al corregir las dimensiones, se borra el contenido del canvas.*/
     lienzo.width = lienzo.clientWidth * dpr;

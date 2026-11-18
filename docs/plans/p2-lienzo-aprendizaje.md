@@ -1,12 +1,12 @@
 # P2 — Plan de aprendizaje: lienzo de acuarela interactivo
 
-**Objetivo:** construir yo misma el lienzo interactivo de `docs/references/lienzo-personal-interactive-watercolor-portfolio.html` dentro de `MiWebPersonal.Web`, entendiendo cada línea.
+**Objetivo:** construir yo misma el lienzo interactivo de acuarela dentro de `MiWebPersonal.Web`, entendiendo cada línea. El objetivo visual es `docs/references/wireframes.html` (solo como guía de cómo debe quedar, no como fuente de código).
 
 **Alcance:** solo capa Web (`_Layout.cshtml`, `wwwroot/js`, `wwwroot/css`). No toca `Core` ni `Infrastructure`.
 
 ## Estado actual (revisado el 2026-11-18)
 
-**Leyenda:** ✅ hecho · 🟡 hecho a medias · ⏭ saltado a propósito · ☐ sin empezar · ⚠ pendiente importante
+**Leyenda:** ✅ código hecho (las casillas de prueba que queden abiertas se anotan y se cierran después) · 🟡 hecho a medias · ⏭ saltado a propósito · ☐ sin empezar · ⚠ pendiente importante
 
 **Orden real que he seguido:** 1 → 2 → 3 → *(me salté el rectángulo de prueba y el círculo)* → 7 → 8 → 9 a medias. Fui directa a la mancha irregular.
 
@@ -20,26 +20,26 @@
 
 **Lo que me salté y conviene cerrar:**
 - ✅ **Paso 5:** decidido que los clics sobre enlaces y botones **también pintan**. No hace falta código.
-- ⚠ **Paso 9:** falta `save()` / `restore()`. Ahora `globalCompositeOperation` se queda en `'multiply'` para siempre y afectará a todo lo que se dibuje después (el borde del paso 10, por ejemplo).
+- ⏭ **Paso 9 → 11:** `save()` / `restore()` movido al paso 11 (Capas), decidido el 2026-11-18. Ahora `globalCompositeOperation` se queda en `'multiply'` para siempre, pero hoy todo lo que se dibuja son manchas y no se nota. Es en el paso 11, con varias capas de ajustes distintos, donde se espera ver el problema; si antes algo se mezcla donde no debe (paso 10), ya sé por dónde buscar.
 - ✅ **Paso 4:** radio, puntos, opacidad, variación y composición están en constantes al principio del fichero (`RADIO_MINIMO`, `NUMERO_PUNTOS`...). El filtro del botón es un *early return* con `BOTON_PRINCIPAL`, antes de calcular `rect`, `x` e `y`. Quedan sin marcar las pruebas de navegador de su checklist (esquinas, toque en modo móvil, scroll).
 - 🟡 **Paso 6:** uso un RGB totalmente aleatorio en vez de una paleta, y mi `random(number)` no recibe mínimo y máximo.
 - ⏭ **Paso 3:** no hice la prueba del rectángulo de 200 × 100. Se puede comprobar igual con la mancha.
 
-**Siguiente paso recomendado:** `save()` / `restore()` del paso 9, y luego volver al paso 6 con una paleta propia antes de empezar el 10.
+**Siguiente paso recomendado:** volver al paso 6 con una paleta propia y un `numeroAleatorio(min, max)`, y seguir con el 10. `save()` / `restore()` se hace en el paso 11.
 
 ---
 
 ## Reglas del juego
 
-- **No avanzo hasta superar el "Cómo sé que funciona" y marcar su checklist.**
-- **Escribo el código a mano**, sin copiar y pegar de la referencia. Puedo leerla, pero cierro el fichero antes de teclear.
+- **No avanzo hasta que el código del paso funciona** (supera su "Cómo sé que funciona"). Las casillas de prueba que queden abiertas se dejan visibles en el plan y las cierro antes de terminar la fase.
+- **Escribo el código a mano.** Aprendo solo con la documentación web (MDN y similares) que me van enseñando durante el aprendizaje: no consulto prototipos ni soluciones de terceros para programar. El wireframe es únicamente objetivo visual.
 - **F12 abierto siempre** (pestaña Consola). Los errores son mis guías.
 - **Escalera de ayuda** cuando me atasque:
   1. Releo la pista del paso y busco el concepto en MDN.
   2. Hago `console.log` de las variables.
-  3. Pido a Claude una pista, no la solución.
-  4. Pego mi código a Claude y le pido que me diga *dónde* está el fallo, sin arreglarlo.
-  5. Solo como último recurso, miro la referencia.
+  3. Pido una pista, no la solución.
+  4. Enseño mi código y pido que me digan *dónde* está el fallo, sin arreglarlo.
+  5. Solo como último recurso, pido una solución explicada.
 
 ## Cierre común (se repite en TODOS los pasos)
 
@@ -49,8 +49,8 @@ Cada paso tiene su checklist específica. Además, antes de darlo por terminado 
 - [ ] Recargo con `Ctrl+Shift+R` y sigue funcionando (descarta que sea caché).
 - [ ] Las otras vistas (Privacy, Descargar CV...) siguen cargando bien.
 - [ ] Sé explicar con mis propias palabras cada línea que he escrito.
-- [ ] No quedan `console.log` de depuración, código comentado ni estilos en línea que no deban estar.
-- [ ] Commit con mensaje claro (`lienzo: paso N - lo que hice`).
+- [ ] No quedan `console.log` sueltos (los de depuración pasan por `log` / `DEBUG`), ni código comentado, ni estilos en línea que no deban estar.
+- [ ] Commit hecho. *(Decisión 2026-11-18: el formato del mensaje es libre cuando lo hago yo. Los que escribe el asistente van cortos, en español y sin prefijos.)*
 - [ ] Marco el paso en la tabla de progreso y anoto lo que aprendí.
 
 ---
@@ -143,6 +143,7 @@ Cada paso tiene su checklist específica. Además, antes de darlo por terminado 
 - **Qué hago:** al inicio del manejador, salir si el objetivo está dentro de `a`, `button`, `input`, `select` o `[data-no-splash]`.
 - **Cómo sé que funciona:** puedo pulsar el menú sin que aparezcan círculos, y en el resto de la página sí.
 - **Consecuencia:** al pulsar un enlace la página navega y el canvas se vacía, así que la mancha solo se verá un instante. El paso 16 (guardar en `sessionStorage`) lo arregla.
+- **Excepción (2026-11-18):** los controles del lienzo (limpiar, guardar, cambiar paleta, paso 15) **no pintan**. Si pintaran, `pointerdown` (que ocurre antes que `click`) haría que "Guardar" descargara un PNG con la mancha de ese propio clic, y "Limpiar" pintaría justo después de borrar. Se resuelve en el paso 15 con `closest` y un atributo `data-no-splash`.
 - **Pendiente para más adelante:** cuando llegue el formulario de contacto, decidir si los campos (`input`, `textarea`) deben pintar. Escribir y pintar a la vez puede molestar.
 
 **✅ Checklist**
@@ -207,14 +208,13 @@ Cada paso tiene su checklist específica. Además, antes de darlo por terminado 
 
 ### Paso 9 · Transparencia y mezcla de pigmentos
 - **Objetivo:** que las manchas se vean translúcidas y se mezclen al solaparse.
-- **Conceptos:** alfa en `hsla`, `globalCompositeOperation = 'multiply'`, `ctx.save()` / `ctx.restore()`.
-- **Qué hago:** bajar la opacidad a ~0.3 y activar `multiply` solo mientras dibujo la mancha, restaurando el estado después.
+- **Conceptos:** alfa en `hsla`, `globalCompositeOperation = 'multiply'`.
+- **Qué hago:** bajar la opacidad a ~0.3 y activar `multiply`.
+- **Nota (2026-11-18):** `ctx.save()` / `ctx.restore()` se ha movido al paso 11. Aquí el modo de mezcla se queda activado y no se nota, porque solo se dibujan manchas.
 - **Cómo sé que funciona:** si pinto dos manchas solapadas, la zona común se ve más oscura, como acuarela real.
 
 **✅ Checklist**
 - [x] Dos manchas solapadas dan una zona más oscura en la intersección.
-- [ ] ⚠ Uso `save()` antes de cambiar el modo de mezcla y `restore()` después.
-- [ ] ⚠ Tras dibujar una mancha, `ctx.globalCompositeOperation` vuelve a `'source-over'` (compruébalo con `console.log`). *(Ahora se queda en `'multiply'`.)*
 - [x] La opacidad está en una constante, no repetida en cinco sitios.
 - [ ] La mancha se ve bien sobre la textura y sobre fondo claro.
 - [ ] Sé explicar qué hace `multiply` y en qué se diferencia de simplemente bajar el alfa.
@@ -230,14 +230,15 @@ Cada paso tiene su checklist específica. Además, antes de darlo por terminado 
 - [ ] Se distingue un centro más intenso y un borde más suave.
 - [ ] Los `addColorStop` van entre 0 y 1 y en orden creciente.
 - [ ] El radio exterior del degradado coincide con el tamaño de la mancha.
-- [ ] El borde es más oscuro y fino, y no tiñe lo que dibuje después (estado restaurado).
+- [ ] El borde es más oscuro y fino. *(Que no tiña lo que se dibuje después se cierra con `save()` / `restore()` en el paso 11.)*
 - [ ] 30 clics seguidos no producen tirones.
 - [ ] Sé explicar qué dos círculos define `createRadialGradient`.
 - [ ] Cierre común hecho.
 
 ### Paso 11 · Capas
 - **Objetivo:** dar profundidad dibujando 3 formas superpuestas, cada una algo más pequeña.
-- **Conceptos:** bucle de capas, reutilizar tu función de forma irregular.
+- **Conceptos:** bucle de capas, reutilizar tu función de forma irregular, `ctx.save()` / `ctx.restore()` (movido aquí desde el paso 9).
+- **Por qué `save()` / `restore()` aquí:** cada capa cambiará ajustes del contexto (opacidad, color, modo de mezcla). Sin guardar y restaurar, los ajustes de una capa se arrastran a la siguiente y a todo lo que se dibuje después. Aquí es donde se espera ver el problema.
 - **Cómo sé que funciona:** la mancha tiene zonas de distinta intensidad, no un solo tono.
 
 **✅ Checklist**
@@ -247,13 +248,16 @@ Cada paso tiene su checklist específica. Además, antes de darlo por terminado 
 - [ ] Reutilizo las funciones de los pasos 7 y 8 en vez de duplicarlas.
 - [ ] Comparando con una captura del paso 10, se nota más profundidad.
 - [ ] El número de capas es un parámetro con nombre.
+- [ ] Uso `save()` antes de cambiar los ajustes del contexto y `restore()` después.
+- [ ] Tras dibujar una mancha, `ctx.globalCompositeOperation` vuelve a `'source-over'` (compruébalo con `console.log`). *(Ahora se queda en `'multiply'`.)*
+- [ ] Sé explicar qué ajustes guardan `save()` / `restore()` y cuáles no (los píxeles ya dibujados no se deshacen).
 - [ ] Cierre común hecho.
 
 ### Paso 12 · Gotas y bruma
 - **Objetivo:** salpicaduras alrededor de la mancha principal.
 - **Conceptos:** posiciones aleatorias en un anillo (ángulo + distancia), tamaños variables, `ellipse` para gotas alargadas.
 - **Qué hago:** primero 10 gotas circulares; luego un 40 % alargadas orientadas hacia fuera; por último puntitos mínimos (bruma).
-- **Cómo sé que funciona:** el resultado ya se parece al de la referencia. Compáralos lado a lado y anota 3 diferencias para pulir.
+- **Cómo sé que funciona:** el resultado ya se parece al wireframe (`docs/references/wireframes.html`). Compáralo con él y con tus capturas de pasos anteriores, y anota 3 diferencias para pulir.
 
 **✅ Checklist**
 - [ ] Las gotas salen en un anillo alrededor de la mancha, no encima.
@@ -262,7 +266,7 @@ Cada paso tiene su checklist específica. Además, antes de darlo por terminado 
 - [ ] Cantidades, tamaños y distancias están en constantes de configuración, no esparcidos por el código.
 - [ ] Hay una función separada (`dibujarGotas(...)`) que no mezcla su lógica con la de la mancha.
 - [ ] Hacer clic cerca del borde de la pantalla no da errores.
-- [ ] Tengo anotadas 3 diferencias frente a la referencia.
+- [ ] Tengo anotadas 3 diferencias frente al wireframe.
 - [ ] Cierre común hecho.
 
 ---
@@ -309,7 +313,7 @@ Cada paso tiene su checklist específica. Además, antes de darlo por terminado 
 - [ ] Limpiar borra **todo**, incluidas las esquinas, y también con zoom o pantalla retina.
 - [ ] Guardar descarga un PNG que se abre bien y tiene fondo (no transparente).
 - [ ] Cambiar la paleta afecta solo a las manchas nuevas.
-- [ ] Pulsar los controles no pinta (paso 5 sigue funcionando).
+- [ ] Pulsar los controles no pinta (excepción al paso 5: llevan `data-no-splash` y se excluyen con `closest`), y el resto de enlaces y botones siguen pintando.
 - [ ] Los botones son `<button type="button">`, no `<div>` clicables.
 - [ ] Los botones con solo icono tienen `aria-label`.
 - [ ] Se pueden usar con teclado (`Tab` + `Enter`).
@@ -352,21 +356,21 @@ Cada paso tiene su checklist específica. Además, antes de darlo por terminado 
 - [ ] En móvil, hacer scroll con el dedo no llena la pantalla de manchas indeseadas.
 - [ ] 100 manchas seguidas no producen tirones (pestaña Performance si dudo).
 - [ ] He ofrecido o valorado una forma de desactivar el lienzo.
-- [ ] No quedan `console.log`, variables sin usar ni código muerto.
+- [ ] `DEBUG` está en `false` y no quedan `console.log` fuera de `log`, variables sin usar ni código muerto. *(Decisión 2026-11-18: `DEBUG` y `log` se quedan en el código final, desactivados.)*
 - [ ] Los comentarios explican el **porqué**, no repiten lo que hace cada línea.
 - [ ] `README.md` y `stack-tecnologico.md` actualizados.
 - [ ] Cierre común hecho.
 
-### Paso 18 · Comparar con la referencia
-- **Todavía no existe ningún solucionario, y es a propósito.** Cuando termine los pasos 1-17, le pido a Claude que genere su versión del lienzo y la guardo en `docs/references/`. Así no la veo antes de tiempo.
-- Leer por fin el prototipo y la versión de Claude (el "solucionario") y anotar qué haría distinto cada uno y por qué.
-- Si hay algo mejor en el solucionario, pregunto por qué antes de adoptarlo.
+### Paso 18 · Revisión final con la documentación
+- **Decisión (2026-11-18):** no hay prototipo ni solucionario. La revisión final se hace contra la documentación web y el wireframe.
+- Repasar cada API usada (canvas, eventos, `sessionStorage`...) en MDN y comprobar que la uso como describe.
+- Comparar el resultado con `docs/references/wireframes.html` y anotar qué mejoraría y por qué.
 
 **✅ Checklist**
-- [ ] He leído el prototipo y el solucionario completos.
-- [ ] Tengo anotadas al menos 3 diferencias con cada uno.
-- [ ] Para cada diferencia sé decir por qué es distinta y cuál prefiero.
-- [ ] Si adopto algo de ellos, entiendo cada línea antes de copiarla.
+- [ ] He releído en MDN la documentación de cada API que uso.
+- [ ] Tengo anotadas al menos 3 mejoras posibles frente al wireframe.
+- [ ] Para cada mejora sé decir por qué la haría y qué concepto nuevo necesito.
+- [ ] Sé explicar con mis palabras cada función del fichero.
 - [ ] Cierre común hecho.
 
 ---
@@ -391,9 +395,9 @@ Cada paso tiene su checklist específica. Además, antes de darlo por terminado 
 | 6    | 🟡    |       | RGB aleatorio en vez de paleta. Falta `numeroAleatorio(min, max)`. |
 | 7    | ✅    |       | `crearPuntos` solo calcula. Falta comprobar `puntos.length`. |
 | 8    | ✅    |       | `trazarCurva` con puntos medios. 🔎 Revisar el cierre entre último y primer punto. |
-| 9    | 🟡    |       | `multiply` y opacidad hechos. ⚠ Falta `save()` / `restore()`. |
+| 9    | 🟡    |       | `multiply` y opacidad hechos. ⏭ `save()` / `restore()` movido al paso 11. |
 | 10   | ☐     |       |                        |
-| 11   | ☐     |       |                        |
+| 11   | ☐     |       | Incluye `save()` / `restore()`, movido desde el paso 9. |
 | 12   | ☐     |       |                        |
 | 13   | ☐     |       |                        |
 | 14   | ☐     |       |                        |
