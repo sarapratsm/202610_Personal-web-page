@@ -156,7 +156,7 @@ function iniciarLienzo() {
     //Añadir listener de pintura
     document.addEventListener("pointerdown", (evento) => {         //Ponemos el listener en el documento para que el click en cualquier lugar del documento active trigger del listener
         if (evento.button !== BOTON_PRINCIPAL) return; //Solo el botón principal activa el event listener. https://developer.mozilla.org/en-US/docs/Web/API/MouseEvent/button 
-        if (evento.target.closest('button')) return; //Si el click es en un botón, no pintamos. https://developer.mozilla.org/en-US/docs/Web/API/Element/closest'))
+        if (evento.target.closest('button')||evento.target.closest('selector')) return; //Si el click es en un botón o selector, no pintamos. https://developer.mozilla.org/en-US/docs/Web/API/Element/closest'))
         const rect = lienzo.getBoundingClientRect();
         const x = evento.clientX - rect.left;
         const y = evento.clientY - rect.top;
