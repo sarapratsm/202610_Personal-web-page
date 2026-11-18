@@ -1,8 +1,32 @@
 # P2 — Plan de aprendizaje: lienzo de acuarela interactivo
 
-**Objetivo:** construir yo misma el lienzo interactivo de `docs/references/lienzo_personal_interactive_watercolor_portfolio.html` dentro de `MiWebPersonal.Web`, entendiendo cada línea.
+**Objetivo:** construir yo misma el lienzo interactivo de `docs/references/lienzo-personal-interactive-watercolor-portfolio.html` dentro de `MiWebPersonal.Web`, entendiendo cada línea.
 
 **Alcance:** solo capa Web (`_Layout.cshtml`, `wwwroot/js`, `wwwroot/css`). No toca `Core` ni `Infrastructure`.
+
+## Estado actual (revisado el 2026-11-18)
+
+**Leyenda:** ✅ hecho · 🟡 hecho a medias · ⏭ saltado a propósito · ☐ sin empezar · ⚠ pendiente importante
+
+**Orden real que he seguido:** 1 → 2 → 3 → *(me salté el rectángulo de prueba y el círculo)* → 7 → 8 → 9 a medias. Fui directa a la mancha irregular.
+
+**Ya funciona en `lienzo.js`:**
+- Canvas a tamaño de ventana y nítido (`corregirDimensiones` con `devicePixelRatio`).
+- Un solo listener `pointerdown` en `document`, con la posición relativa al lienzo.
+- Mancha irregular (`crearPuntos`) suavizada con curvas (`trazarCurva`).
+- Color aleatorio translúcido con `multiply` para que las manchas se mezclen.
+- Extras que no estaban en el plan: interruptor `DEBUG` y función `log`, comentarios JSDoc con enlaces a MDN.
+
+**Lo que me salté y conviene cerrar:**
+- ⚠ **Paso 5:** el listener pinta también al pulsar enlaces y botones del navbar.
+- ⚠ **Paso 9:** falta `save()` / `restore()`. Ahora `globalCompositeOperation` se queda en `'multiply'` para siempre y afectará a todo lo que se dibuje después (el borde del paso 10, por ejemplo).
+- 🟡 **Paso 4:** el radio y el color tienen números mágicos dentro de `pintarLienzo`, y no he decidido qué botón del ratón pinta.
+- 🟡 **Paso 6:** uso un RGB totalmente aleatorio en vez de una paleta, y mi `random(number)` no recibe mínimo y máximo.
+- ⏭ **Paso 3:** no hice la prueba del rectángulo de 200 × 100. Se puede comprobar igual con la mancha.
+
+**Siguiente paso recomendado:** cerrar el paso 5 (es corto y mejora la web ya), después `save()` / `restore()` del paso 9, y luego volver al paso 6 con una paleta propia antes de empezar el 10.
+
+---
 
 ## Reglas del juego
 
@@ -81,8 +105,8 @@ Cada paso tiene su checklist específica. Además, antes de darlo por terminado 
 **✅ Checklist**
 - [x] En la consola, `canvas.width` es `innerWidth × devicePixelRatio` (y `canvas.height`, igual).
 - [x] Asigno el tamaño **antes** de escalar el contexto.
-- [ ] Un rectángulo de 200 × 100 mide 200 × 100 píxeles CSS en pantalla.
-- [ ] Los bordes salen nítidos, también con el zoom del navegador al 150 %.
+- [ ] ⏭ Un rectángulo de 200 × 100 mide 200 × 100 píxeles CSS en pantalla. *(Saltado: se puede comprobar con la mancha.)*
+- [ ] ⏭ Los bordes salen nítidos, también con el zoom del navegador al 150 %. *(Pruébalo con las manchas.)*
 - [x] No he tocado el tamaño CSS del canvas: lo sigue controlando `lienzo.css`.
 - [x] El tamaño se calcula en una función con nombre (`ajustarTamano()`), no suelto.
 - [ ] Sé explicar qué es `devicePixelRatio` y por qué una pantalla retina lo necesita.
@@ -94,16 +118,17 @@ Cada paso tiene su checklist específica. Además, antes de darlo por terminado 
 - **Qué hago:** borrar el rectángulo de prueba. Escuchar `pointerdown` en `document` y dibujar un círculo de 40 px.
 - **Pista:** pregunta por qué `pointerdown` es mejor que `click` + `touchstart` (investiga qué pasa en un móvil con los dos).
 - **Cómo sé que funciona:** cada clic o toque pone un círculo justo bajo el puntero. Pruébalo con el modo móvil de F12.
+- ⏭ **Nota:** me salté el círculo y pinté directamente la mancha irregular. El listener ya está hecho; quedan los puntos marcados con ⚠ abajo.
 
 **✅ Checklist**
-- [ ] Hay **un solo** listener, `pointerdown`, y no `click` + `touchstart`.
+- [x] Hay **un solo** listener, `pointerdown`, y no `click` + `touchstart`.
 - [ ] El círculo queda centrado bajo el puntero en las cuatro esquinas de la ventana.
 - [ ] En el modo dispositivo de F12, un toque pinta **un** círculo (no dos).
 - [ ] Con la página con scroll, el círculo sigue saliendo bajo el puntero.
-- [ ] El listener solo llama a una función `salpicar(x, y)` que dibuja; no lleva todo el dibujo dentro.
-- [ ] El radio está en una constante con nombre, sin números mágicos repartidos.
-- [ ] He decidido si el botón derecho o central debe pintar (`event.button`).
-- [ ] Sé explicar la diferencia entre `clientX` y `pageX`.
+- [x] El listener solo llama a una función `salpicar(x, y)` que dibuja; no lleva todo el dibujo dentro. *(En mi código es `pintarLienzo(ctx, x, y)`.)*
+- [ ] ⚠ El radio está en una constante con nombre, sin números mágicos repartidos. *(Ahora sale de `Math.floor(Math.random() * 20) + 20` dentro de `pintarLienzo`.)*
+- [ ] ⚠ He decidido si el botón derecho o central debe pintar (`event.button`).
+- [x] Sé explicar la diferencia entre `clientX` y `pageX`. *(Está explicado en un comentario de mi código.)*
 - [ ] Cierre común hecho.
 
 ### Paso 5 · No pintar al pulsar enlaces o botones
@@ -111,6 +136,7 @@ Cada paso tiene su checklist específica. Además, antes de darlo por terminado 
 - **Conceptos:** `event.target`, `element.closest(selector)`, `return` temprano.
 - **Qué hago:** al inicio del manejador, salir si el objetivo está dentro de `a`, `button`, `input`, `select` o `[data-no-splash]`.
 - **Cómo sé que funciona:** puedo pulsar el menú sin que aparezcan círculos, y en el resto de la página sí.
+- ⚠ **Pendiente:** ahora el listener está en `document` y pinta también al pulsar enlaces y botones.
 
 **✅ Checklist**
 - [ ] Pulsar cada enlace del navbar navega y no pinta.
@@ -132,6 +158,7 @@ Cada paso tiene su checklist específica. Además, antes de darlo por terminado 
 - **Conceptos:** arrays, `Math.random`, `Math.floor`, color `hsl()`/`hsla()` y por qué es cómodo para variar tonos.
 - **Qué hago:** definir una paleta de 5-7 colores (idealmente de mi marca personal, ver `docs/diario-interno/analisis/marca-personal.md`, que es local y no se versiona) y elegir uno al azar. Crear una función pequeña `numeroAleatorio(min, max)` y usarla.
 - **Cómo sé que funciona:** los círculos salen de colores variados y siempre dentro de la paleta.
+- 🟡 **Estado:** de momento uso un RGB aleatorio con `rgb(${random(255)} ...)`, sin paleta. Mi `random(number)` da un entero entre 0 y `number`, y no recibe mínimo y máximo como pide `numeroAleatorio(min, max)`.
 
 **✅ Checklist**
 - [ ] La paleta es una constante al principio del fichero, no está dentro de una función.
@@ -150,13 +177,13 @@ Cada paso tiene su checklist específica. Además, antes de darlo por terminado 
 - **Cómo sé que funciona:** veo un polígono irregular, con picos. Es feo, y es lo esperado.
 
 **✅ Checklist**
-- [ ] Una función (`crearPuntos(cx, cy, radio, n)`) **solo calcula** los puntos y los devuelve, no dibuja.
-- [ ] Otra parte del código recorre los puntos y los dibuja (separación de responsabilidades).
+- [x] Una función (`crearPuntos(cx, cy, radio, n)`) **solo calcula** los puntos y los devuelve, no dibuja.
+- [x] Otra parte del código recorre los puntos y los dibuja (separación de responsabilidades).
 - [ ] `console.log(puntos.length)` da el número de puntos que pedí.
-- [ ] Los ángulos están repartidos de forma uniforme alrededor del círculo.
-- [ ] El polígono está cerrado (`closePath`) y no le falta ningún lado.
-- [ ] Cada clic genera una forma distinta.
-- [ ] El número de puntos y la irregularidad son parámetros con nombre, no números mágicos.
+- [x] Los ángulos están repartidos de forma uniforme alrededor del círculo.
+- [x] El polígono está cerrado (`closePath`) y no le falta ningún lado.
+- [x] Cada clic genera una forma distinta.
+- [x] El número de puntos y la irregularidad son parámetros con nombre, no números mágicos.
 - [ ] Cierre común hecho.
 
 ### Paso 8 · Suavizar los bordes
@@ -168,8 +195,8 @@ Cada paso tiene su checklist específica. Además, antes de darlo por terminado 
 
 **✅ Checklist**
 - [ ] No se ve ningún pico y la forma parece un charco.
-- [ ] No hay un "corte" entre el último y el primer punto.
-- [ ] La lógica está en una función reutilizable (`trazarCurva(puntos)`).
+- [ ] 🔎 No hay un "corte" entre el último y el primer punto. *(Revísalo: mira en qué punto empieza el trazo con `moveTo` y qué hace `closePath` al final. Pruébalo con pocos puntos, por ejemplo 5, para verlo mejor.)*
+- [x] La lógica está en una función reutilizable (`trazarCurva(puntos)`). *(La mía recibe también `ctx`: `trazarCurva(ctx, puntos)`, y está bien.)*
 - [ ] Puedo explicar con un dibujo en papel por qué usamos puntos medios.
 - [ ] Probado con 5 puntos y con 30 puntos, y la forma sigue siendo válida.
 - [ ] Cierre común hecho.
@@ -181,10 +208,10 @@ Cada paso tiene su checklist específica. Además, antes de darlo por terminado 
 - **Cómo sé que funciona:** si pinto dos manchas solapadas, la zona común se ve más oscura, como acuarela real.
 
 **✅ Checklist**
-- [ ] Dos manchas solapadas dan una zona más oscura en la intersección.
-- [ ] Uso `save()` antes de cambiar el modo de mezcla y `restore()` después.
-- [ ] Tras dibujar una mancha, `ctx.globalCompositeOperation` vuelve a `'source-over'` (compruébalo con `console.log`).
-- [ ] La opacidad está en una constante, no repetida en cinco sitios.
+- [x] Dos manchas solapadas dan una zona más oscura en la intersección.
+- [ ] ⚠ Uso `save()` antes de cambiar el modo de mezcla y `restore()` después.
+- [ ] ⚠ Tras dibujar una mancha, `ctx.globalCompositeOperation` vuelve a `'source-over'` (compruébalo con `console.log`). *(Ahora se queda en `'multiply'`.)*
+- [x] La opacidad está en una constante, no repetida en cinco sitios.
 - [ ] La mancha se ve bien sobre la textura y sobre fondo claro.
 - [ ] Sé explicar qué hace `multiply` y en qué se diferencia de simplemente bajar el alfa.
 - [ ] Cierre común hecho.
@@ -351,15 +378,15 @@ Cada paso tiene su checklist específica. Además, antes de darlo por terminado 
 
 | Paso | Hecho | Fecha | Lo que aprendí / dudas |
 |------|-------|-------|------------------------|
-| 1    | ☐     |       |                        |
-| 2    | ☐     |       |                        |
-| 3    | ☐     |       |                        |
-| 4    | ☐     |       |                        |
-| 5    | ☐     |       |                        |
-| 6    | ☐     |       |                        |
-| 7    | ☐     |       |                        |
-| 8    | ☐     |       |                        |
-| 9    | ☐     |       |                        |
+| 1    | ✅    |       | Canvas, textura y capas con variables `--z-*`. |
+| 2    | ✅    |       | Script enlazado con `defer`, comprobación de `null`. |
+| 3    | 🟡    |       | `corregirDimensiones` con `devicePixelRatio`. Saltada la prueba del rectángulo 200 × 100. |
+| 4    | ⏭     |       | Saltado el círculo. El `pointerdown` ya funciona. Faltan constante del radio y `event.button`. |
+| 5    | ☐     |       | ⚠ Ahora pinta también al pulsar enlaces y botones. |
+| 6    | 🟡    |       | RGB aleatorio en vez de paleta. Falta `numeroAleatorio(min, max)`. |
+| 7    | ✅    |       | `crearPuntos` solo calcula. Falta comprobar `puntos.length`. |
+| 8    | ✅    |       | `trazarCurva` con puntos medios. 🔎 Revisar el cierre entre último y primer punto. |
+| 9    | 🟡    |       | `multiply` y opacidad hechos. ⚠ Falta `save()` / `restore()`. |
 | 10   | ☐     |       |                        |
 | 11   | ☐     |       |                        |
 | 12   | ☐     |       |                        |
