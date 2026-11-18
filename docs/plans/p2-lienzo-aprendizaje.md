@@ -18,13 +18,13 @@
 - Extras que no estaban en el plan: interruptor `DEBUG` y función `log`, comentarios JSDoc con enlaces a MDN.
 
 **Lo que me salté y conviene cerrar:**
-- ⚠ **Paso 5:** el listener pinta también al pulsar enlaces y botones del navbar.
+- ✅ **Paso 5:** decidido que los clics sobre enlaces y botones **también pintan**. No hace falta código.
 - ⚠ **Paso 9:** falta `save()` / `restore()`. Ahora `globalCompositeOperation` se queda en `'multiply'` para siempre y afectará a todo lo que se dibuje después (el borde del paso 10, por ejemplo).
 - 🟡 **Paso 4:** el radio y el color tienen números mágicos dentro de `pintarLienzo`, y no he decidido qué botón del ratón pinta.
 - 🟡 **Paso 6:** uso un RGB totalmente aleatorio en vez de una paleta, y mi `random(number)` no recibe mínimo y máximo.
 - ⏭ **Paso 3:** no hice la prueba del rectángulo de 200 × 100. Se puede comprobar igual con la mancha.
 
-**Siguiente paso recomendado:** cerrar el paso 5 (es corto y mejora la web ya), después `save()` / `restore()` del paso 9, y luego volver al paso 6 con una paleta propia antes de empezar el 10.
+**Siguiente paso recomendado:** `save()` / `restore()` del paso 9, y luego volver al paso 6 con una paleta propia antes de empezar el 10.
 
 ---
 
@@ -131,23 +131,22 @@ Cada paso tiene su checklist específica. Además, antes de darlo por terminado 
 - [x] Sé explicar la diferencia entre `clientX` y `pageX`. *(Está explicado en un comentario de mi código.)*
 - [ ] Cierre común hecho.
 
-### Paso 5 · No pintar al pulsar enlaces o botones
-- **Objetivo:** que la navegación y los controles no salpiquen.
+### Paso 5 · ¿Pintar al pulsar enlaces o botones? (decisión: sí)
+- **Decisión (2026-11-18):** me gusta que **todos** los clics pinten, también sobre enlaces y botones. Así que no añado el filtro de abajo. Si cambio de idea, el plan original sigue aquí.
+- **Objetivo original (descartado):** que la navegación y los controles no salpiquen.
 - **Conceptos:** `event.target`, `element.closest(selector)`, `return` temprano.
 - **Qué hago:** al inicio del manejador, salir si el objetivo está dentro de `a`, `button`, `input`, `select` o `[data-no-splash]`.
 - **Cómo sé que funciona:** puedo pulsar el menú sin que aparezcan círculos, y en el resto de la página sí.
-- ⚠ **Pendiente:** ahora el listener está en `document` y pinta también al pulsar enlaces y botones.
+- **Consecuencia:** al pulsar un enlace la página navega y el canvas se vacía, así que la mancha solo se verá un instante. El paso 16 (guardar en `sessionStorage`) lo arregla.
+- **Pendiente para más adelante:** cuando llegue el formulario de contacto, decidir si los campos (`input`, `textarea`) deben pintar. Escribir y pintar a la vez puede molestar.
 
 **✅ Checklist**
-- [ ] Pulsar cada enlace del navbar navega y no pinta.
-- [ ] Pulsar los botones de GitHub, LinkedIn y CV no pinta.
-- [ ] Pulsar el **icono** (`<i>`) dentro de un botón tampoco pinta (esto prueba que uso `closest`, no solo `target`).
-- [ ] Pulsar en el fondo o en el texto sí pinta.
-- [ ] Uso un `return` temprano al inicio de la función, sin `if` anidados.
-- [ ] El selector está en una constante con nombre.
+*(Checklist adaptada a la decisión de pintar siempre.)*
+- [x] Decisión tomada: los clics sobre enlaces y botones también pintan.
+- [ ] Pulsar cada enlace del navbar sigue navegando (la mancha aparece un instante y la página cambia).
+- [ ] Pulsar los botones de GitHub, LinkedIn y CV sigue funcionando.
 - [ ] Con el teclado (`Tab` + `Enter`) los enlaces siguen funcionando.
-- [ ] Sé explicar qué diferencia hay entre `target` y `closest`.
-- [ ] Cierre común hecho.
+- [ ] Sé explicar qué diferencia hay entre `target` y `closest`, por si más adelante excluyo los campos de formulario.
 
 ---
 
@@ -383,7 +382,7 @@ Cada paso tiene su checklist específica. Además, antes de darlo por terminado 
 | 2    | ✅    |       | Script enlazado con `defer`, comprobación de `null`. |
 | 3    | 🟡    |       | `corregirDimensiones` con `devicePixelRatio`. Saltada la prueba del rectángulo 200 × 100. |
 | 4    | ⏭     |       | Saltado el círculo. El `pointerdown` ya funciona. Faltan constante del radio y `event.button`. |
-| 5    | ☐     |       | ⚠ Ahora pinta también al pulsar enlaces y botones. |
+| 5    | ✅    |       | Decisión de diseño: pintar siempre, también sobre enlaces y botones. Sin código. |
 | 6    | 🟡    |       | RGB aleatorio en vez de paleta. Falta `numeroAleatorio(min, max)`. |
 | 7    | ✅    |       | `crearPuntos` solo calcula. Falta comprobar `puntos.length`. |
 | 8    | ✅    |       | `trazarCurva` con puntos medios. 🔎 Revisar el cierre entre último y primer punto. |
