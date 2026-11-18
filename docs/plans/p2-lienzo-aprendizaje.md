@@ -4,30 +4,6 @@
 
 **Alcance:** solo capa Web (`_Layout.cshtml`, `wwwroot/js`, `wwwroot/css`). No toca `Core` ni `Infrastructure`.
 
-## Estado actual (revisado el 2026-11-18)
-
-**Leyenda:** ✅ código hecho (las casillas de prueba que queden abiertas se anotan y se cierran después) · 🟡 hecho a medias · ⏭ saltado a propósito · ☐ sin empezar · ⚠ pendiente importante
-
-**Orden real que he seguido:** 1 → 2 → 3 → *(me salté el rectángulo de prueba y el círculo)* → 7 → 8 → 9 a medias. Fui directa a la mancha irregular.
-
-**Ya funciona en `lienzo.js`:**
-- Canvas a tamaño de ventana y nítido (`corregirDimensiones` con `devicePixelRatio`).
-- Un solo listener `pointerdown` en `document`, con la posición relativa al lienzo.
-- Solo el botón principal pinta: `if (button === 0)` dentro del listener (clic derecho y central no pintan).
-- Mancha irregular (`crearPuntos`) suavizada con curvas (`trazarCurva`).
-- Color aleatorio translúcido con `multiply` para que las manchas se mezclen.
-- Extras que no estaban en el plan: interruptor `DEBUG` y función `log`, comentarios JSDoc con enlaces a MDN.
-
-**Lo que me salté y conviene cerrar:**
-- ✅ **Paso 5:** decidido que los clics sobre enlaces y botones **también pintan**. No hace falta código.
-- ⏭ **Paso 9 → 11:** `save()` / `restore()` movido al paso 11 (Capas), decidido el 2026-11-18. Ahora `globalCompositeOperation` se queda en `'multiply'` para siempre, pero hoy todo lo que se dibuja son manchas y no se nota. Es en el paso 11, con varias capas de ajustes distintos, donde se espera ver el problema; si antes algo se mezcla donde no debe (paso 10), ya sé por dónde buscar.
-- ✅ **Paso 4:** radio, puntos, opacidad, variación y composición están en constantes al principio del fichero (`RADIO_MINIMO`, `NUMERO_PUNTOS`...). El filtro del botón es un *early return* con `BOTON_PRINCIPAL`, antes de calcular `rect`, `x` e `y`. Quedan sin marcar las pruebas de navegador de su checklist (esquinas, toque en modo móvil, scroll).
-- 🟡 **Paso 6:** uso un RGB totalmente aleatorio en vez de una paleta, y mi `random(number)` no recibe mínimo y máximo.
-- ⏭ **Paso 3:** no hice la prueba del rectángulo de 200 × 100. Se puede comprobar igual con la mancha.
-
-**Siguiente paso recomendado:** volver al paso 6 con una paleta propia y un `numeroAleatorio(min, max)`, y seguir con el 10. `save()` / `restore()` se hace en el paso 11.
-
----
 
 ## Reglas del juego
 
@@ -106,11 +82,9 @@ Cada paso tiene su checklist específica. Además, antes de darlo por terminado 
 **✅ Checklist**
 - [x] En la consola, `canvas.width` es `innerWidth × devicePixelRatio` (y `canvas.height`, igual).
 - [x] Asigno el tamaño **antes** de escalar el contexto.
-- [ ] ⏭ Un rectángulo de 200 × 100 mide 200 × 100 píxeles CSS en pantalla. *(Saltado: se puede comprobar con la mancha.)*
-- [ ] ⏭ Los bordes salen nítidos, también con el zoom del navegador al 150 %. *(Pruébalo con las manchas.)*
 - [x] No he tocado el tamaño CSS del canvas: lo sigue controlando `lienzo.css`.
 - [x] El tamaño se calcula en una función con nombre (`ajustarTamano()`), no suelto.
-- [ ] Sé explicar qué es `devicePixelRatio` y por qué una pantalla retina lo necesita.
+- [x] Sé explicar qué es `devicePixelRatio` y por qué una pantalla retina lo necesita.
 - [ ] Cierre común hecho.
 
 ### Paso 4 · Dibujar donde hago clic
@@ -119,7 +93,7 @@ Cada paso tiene su checklist específica. Además, antes de darlo por terminado 
 - **Qué hago:** borrar el rectángulo de prueba. Escuchar `pointerdown` en `document` y dibujar un círculo de 40 px.
 - **Pista:** pregunta por qué `pointerdown` es mejor que `click` + `touchstart` (investiga qué pasa en un móvil con los dos).
 - **Cómo sé que funciona:** cada clic o toque pone un círculo justo bajo el puntero. Pruébalo con el modo móvil de F12.
-- ⏭ **Nota:** me salté el círculo y pinté directamente la mancha irregular. El listener está hecho y los números mágicos ya están en constantes; solo quedan por marcar las pruebas de navegador de la checklist.
+
 
 **✅ Checklist**
 - [x] Hay **un solo** listener, `pointerdown`, y no `click` + `touchstart`.
@@ -383,25 +357,3 @@ Cada paso tiene su checklist específica. Además, antes de darlo por terminado 
 - **Salpicar al cargar la sección de proyectos**, cada proyecto con su color.
 - **Respetar `prefers-reduced-motion`** y ofrecer un interruptor para desactivar el lienzo.
 
-## Registro de progreso
-
-| Paso | Hecho | Fecha | Lo que aprendí / dudas |
-|------|-------|-------|------------------------|
-| 1    | ✅    |       | Canvas, textura y capas con variables `--z-*`. |
-| 2    | ✅    |       | Script enlazado con `defer`, comprobación de `null`. |
-| 3    | 🟡    |       | `corregirDimensiones` con `devicePixelRatio`. Saltada la prueba del rectángulo 200 × 100. |
-| 4    | ✅    | 2026-11-18 | Saltado el círculo. `pointerdown` y filtro `button === 0` hechos. Aprendí la herencia `Event` → `UIEvent` → `MouseEvent` → `PointerEvent` (por eso `evento.button` funciona), `instanceof` y el *early return*; tengo una guía en mi repo de tutoriales (`desarrollo-web/eventos-del-dom`). Constantes del radio, puntos, opacidad, variación, composición y botón hechas, y filtro con *early return*. Pendientes las pruebas en navegador (esquinas, toque en F12, scroll). |
-| 5    | ✅    |       | Decisión de diseño: pintar siempre, también sobre enlaces y botones. Sin código. |
-| 6    | 🟡    |       | RGB aleatorio en vez de paleta. Falta `numeroAleatorio(min, max)`. |
-| 7    | ✅    |       | `crearPuntos` solo calcula. Falta comprobar `puntos.length`. |
-| 8    | ✅    |       | `trazarCurva` con puntos medios. 🔎 Revisar el cierre entre último y primer punto. |
-| 9    | 🟡    |       | `multiply` y opacidad hechos. ⏭ `save()` / `restore()` movido al paso 11. |
-| 10   | ☐     |       |                        |
-| 11   | ☐     |       | Incluye `save()` / `restore()`, movido desde el paso 9. |
-| 12   | ☐     |       |                        |
-| 13   | ☐     |       |                        |
-| 14   | ☐     |       |                        |
-| 15   | ☐     |       |                        |
-| 16   | ☐     |       |                        |
-| 17   | ☐     |       |                        |
-| 18   | ☐     |       |                        |
