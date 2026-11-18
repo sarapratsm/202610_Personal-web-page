@@ -3,6 +3,7 @@
 const DEBUG = true;
 const RADIO_MINIMO = 20;
 const RADIO_MAXIMO = 40;
+const BOTON_PRINCIPAL = 0; //El botón principal del ratón es el izquierdo, el secundario es el derecho y el central es la rueda. https://developer.mozilla.org/en-US/docs/Web/API/MouseEvent/button
 
 //=========FUNCIONES AUXILIARES=========
 /**
@@ -149,7 +150,7 @@ function iniciarLienzo() {
 
     //Añadir listener de pintura
     document.addEventListener("pointerdown", (evento) => {         //Ponemos el listener en el documento para que el click en cualquier lugar del documento active trigger del listener
-        if (evento.button !== 0) return; //Solo el botón principal activa el event listener. https://developer.mozilla.org/en-US/docs/Web/API/MouseEvent/button 
+        if (evento.button !== BOTON_PRINCIPAL) return; //Solo el botón principal activa el event listener. https://developer.mozilla.org/en-US/docs/Web/API/MouseEvent/button 
         const rect = lienzo.getBoundingClientRect();
         const x = evento.clientX - rect.left;
         const y = evento.clientY - rect.top;
