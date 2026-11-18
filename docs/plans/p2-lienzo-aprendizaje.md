@@ -13,6 +13,7 @@
 **Ya funciona en `lienzo.js`:**
 - Canvas a tamaño de ventana y nítido (`corregirDimensiones` con `devicePixelRatio`).
 - Un solo listener `pointerdown` en `document`, con la posición relativa al lienzo.
+- Solo el botón principal pinta: `if (button === 0)` dentro del listener (clic derecho y central no pintan).
 - Mancha irregular (`crearPuntos`) suavizada con curvas (`trazarCurva`).
 - Color aleatorio translúcido con `multiply` para que las manchas se mezclen.
 - Extras que no estaban en el plan: interruptor `DEBUG` y función `log`, comentarios JSDoc con enlaces a MDN.
@@ -20,7 +21,7 @@
 **Lo que me salté y conviene cerrar:**
 - ✅ **Paso 5:** decidido que los clics sobre enlaces y botones **también pintan**. No hace falta código.
 - ⚠ **Paso 9:** falta `save()` / `restore()`. Ahora `globalCompositeOperation` se queda en `'multiply'` para siempre y afectará a todo lo que se dibuje después (el borde del paso 10, por ejemplo).
-- 🟡 **Paso 4:** el radio y el color tienen números mágicos dentro de `pintarLienzo`, y no he decidido qué botón del ratón pinta.
+- 🟡 **Paso 4:** el radio y el color tienen números mágicos dentro de `pintarLienzo`. El botón ya está decidido (solo el principal). Mejoras pendientes del filtro: pasarlo a *early return* **antes** de calcular `rect`, `x` e `y`, y nombrar el `0` con una constante (`BOTON_PRINCIPAL`).
 - 🟡 **Paso 6:** uso un RGB totalmente aleatorio en vez de una paleta, y mi `random(number)` no recibe mínimo y máximo.
 - ⏭ **Paso 3:** no hice la prueba del rectángulo de 200 × 100. Se puede comprobar igual con la mancha.
 
@@ -127,7 +128,11 @@ Cada paso tiene su checklist específica. Además, antes de darlo por terminado 
 - [ ] Con la página con scroll, el círculo sigue saliendo bajo el puntero.
 - [x] El listener solo llama a una función `salpicar(x, y)` que dibuja; no lleva todo el dibujo dentro. *(En mi código es `pintarLienzo(ctx, x, y)`.)*
 - [ ] ⚠ El radio está en una constante con nombre, sin números mágicos repartidos. *(Ahora sale de `Math.floor(Math.random() * 20) + 20` dentro de `pintarLienzo`.)*
-- [ ] ⚠ He decidido si el botón derecho o central debe pintar (`event.button`).
+- [x] He decidido si el botón derecho o central debe pintar (`event.button`). *(Decisión 2026-11-18: solo pinta el principal, `button === 0`.)*
+- [ ] El filtro del botón usa *early return* y una constante con nombre en vez del `0` suelto.
+- [ ] En modo dispositivo de F12, un toque con el dedo pinta (en `pointerdown` táctil, `button` vale `0`).
+- [ ] He decidido qué hacer con el menú contextual del clic derecho (dejarlo o suprimirlo con `contextmenu` + `preventDefault()`).
+- [ ] Sé explicar por qué `evento.button` está disponible en un `PointerEvent` (herencia: `PointerEvent` → `MouseEvent`).
 - [x] Sé explicar la diferencia entre `clientX` y `pageX`. *(Está explicado en un comentario de mi código.)*
 - [ ] Cierre común hecho.
 
@@ -381,7 +386,7 @@ Cada paso tiene su checklist específica. Además, antes de darlo por terminado 
 | 1    | ✅    |       | Canvas, textura y capas con variables `--z-*`. |
 | 2    | ✅    |       | Script enlazado con `defer`, comprobación de `null`. |
 | 3    | 🟡    |       | `corregirDimensiones` con `devicePixelRatio`. Saltada la prueba del rectángulo 200 × 100. |
-| 4    | ⏭     |       | Saltado el círculo. El `pointerdown` ya funciona. Faltan constante del radio y `event.button`. |
+| 4    | 🟡    | 2026-11-18 | Saltado el círculo. `pointerdown` y filtro `button === 0` hechos. Aprendí la herencia `Event` → `UIEvent` → `MouseEvent` → `PointerEvent` (por eso `evento.button` funciona), `instanceof` y el *early return*; tengo una guía en mi repo de tutoriales (`desarrollo-web/eventos-del-dom`). Faltan constante del radio, constante del botón y pasar el filtro a *early return*. |
 | 5    | ✅    |       | Decisión de diseño: pintar siempre, también sobre enlaces y botones. Sin código. |
 | 6    | 🟡    |       | RGB aleatorio en vez de paleta. Falta `numeroAleatorio(min, max)`. |
 | 7    | ✅    |       | `crearPuntos` solo calcula. Falta comprobar `puntos.length`. |

@@ -1,6 +1,8 @@
 ﻿//Script de lienzo de la página web personal. Cada click crea pintura en el liezo :3
 //=========CONSTANTES=========
 const DEBUG = true;
+const RADIO_MINIMO = 20;
+const RADIO_MAXIMO = 40;
 
 //=========FUNCIONES AUXILIARES=========
 /**
@@ -117,7 +119,7 @@ function trazarCurva(ctx, puntos) {
  * @see https://developer.mozilla.org/es/docs/Learn_web_development/Core/Scripting/Events
  */
 function pintarLienzo(ctx, x, y) {
-    const radio = Math.floor(Math.random() * 20) + 20; //Mínim 20, màxim 40
+    const radio = Math.floor(Math.random() * (RADIO_MAXIMO - RADIO_MINIMO + 1)) + RADIO_MINIMO; //Mínim 20, màxim 40
     const numeroPuntos = 10;
     const opacidad = 0.3;
     const rndCol = `rgb(${random(255)} ${random(255)} ${random(255)} / ${opacidad})`;
