@@ -146,7 +146,7 @@ function iniciarLienzo() {
     corregirDimensiones(lienzo, ctx)
 
     //Añadir listener de pintura
-    document.addEventListener("pointerdown", (evento) => {         //Ponemos el listener en el documento para que cualquier click en cualquier lugar del documento active trigger del listener
+    document.addEventListener("pointerdown", (evento) => {         //Ponemos el listener en el documento para que el click en cualquier lugar del documento active trigger del listener
         if (evento.button !== 0) return; //Solo el botón principal activa el event listener. https://developer.mozilla.org/en-US/docs/Web/API/MouseEvent/button 
         const rect = lienzo.getBoundingClientRect();
         const x = evento.clientX - rect.left;
