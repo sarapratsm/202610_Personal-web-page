@@ -130,7 +130,7 @@ Cada paso tiene su checklist específica. Además, antes de darlo por terminado 
 ### Paso 6 · Color aleatorio con paleta
 - **Objetivo:** cada círculo con un color distinto de una paleta mía.
 - **Conceptos:** arrays, `Math.random`, `Math.floor`, color `hsl()`/`hsla()` y por qué es cómodo para variar tonos.
-- **Qué hago:** definir una paleta de 5-7 colores (idealmente de mi marca personal, ver `docs/analisis/marca-personal.md`) y elegir uno al azar. Crear una función pequeña `numeroAleatorio(min, max)` y usarla.
+- **Qué hago:** definir una paleta de 5-7 colores (idealmente de mi marca personal, ver `docs/diario-interno/analisis/marca-personal.md`, que es local y no se versiona) y elegir uno al azar. Crear una función pequeña `numeroAleatorio(min, max)` y usarla.
 - **Cómo sé que funciona:** los círculos salen de colores variados y siempre dentro de la paleta.
 
 **✅ Checklist**
@@ -343,7 +343,7 @@ Cada paso tiene su checklist específica. Además, antes de darlo por terminado 
 
 - **Pintar arrastrando** (`pointermove` mientras el botón está pulsado) en vez de solo clic.
 - **Sonido** con la Web Audio API nativa (sin Tone.js).
-- **Colores de marca** extraídos de `marca-personal.md` como paleta propia.
+- **Colores de marca** extraídos de `docs/diario-interno/analisis/marca-personal.md` (local) como paleta propia.
 - **Salpicar al cargar la sección de proyectos**, cada proyecto con su color.
 - **Respetar `prefers-reduced-motion`** y ofrecer un interruptor para desactivar el lienzo.
 

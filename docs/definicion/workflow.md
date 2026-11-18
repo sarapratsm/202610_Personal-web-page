@@ -8,5 +8,5 @@
 - [ ] No hay secretos, passwords ni cadenas de conexión reales en el código fuente ni en appsettings.json.
 - [ ] El archivo .gitignore incluye carpetas .vs/, bin/, obj/, archivos *.db, *.db-shm, *.db-wal (SQLite) y appsettings.Development.json (si contiene datos sensibles).
 - [ ] El comando dotnet build compila sin errores ni warnings críticos.
-- [ ] El CSS generado por Tailwind está actualizado.
+- [ ] Los estilos propios (`site.css`, `lienzo.css`) están al día y la web se ve bien con Bootstrap cargado.
 
