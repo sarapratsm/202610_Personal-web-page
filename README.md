@@ -41,3 +41,26 @@ La intención NO es usar IA para escribir código. la intención es escribir yo 
 └── tests/                # Pruebas unitarias y de integración
 ```
 
+
+---
+
+## Documentación
+
+| Carpeta | Contenido |
+|---|---|
+| `docs/definicion/` | Alcance de la versión 1 (`scope-v1.md`), stack tecnológico y flujo de trabajo. |
+| `docs/plans/` | Planes de trabajo (`p0-to-do.md`, `p2-lienzo-aprendizaje.md`). |
+| `docs/references/` | Referencias de diseño: user stories y wireframes de la web (definidos en el repositorio de wireframes). |
+| `docs/apuntes/` | Apuntes sueltos de aprendizaje (comandos útiles, eventos). |
+| `docs/diario-interno/` | Diario y análisis internos. |
+
+## Cómo ejecutarla
+
+Requiere el [SDK de .NET 10](https://dotnet.microsoft.com/download).
+
+```bash
+dotnet run --project src/MiWebPersonal.Web
+dotnet test
+```
+
+La solución es `MiWebPersonal.slnx`.
