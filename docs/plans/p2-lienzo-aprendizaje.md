@@ -164,7 +164,7 @@ Cada paso tiene su checklist específica. Además, antes de darlo por terminado 
 - [x] El polígono está cerrado (`closePath`) y no le falta ningún lado.
 - [x] Cada clic genera una forma distinta.
 - [x] El número de puntos y la irregularidad son parámetros con nombre, no números mágicos.
-- [ ] Cada llamada a `crearPuntos` da una forma nueva. *(En el paso 11, cada capa tendrá la suya: no se reutilizan los puntos.)*
+- [x] Cada llamada a `crearPuntos` da una forma nueva. *(En el paso 11, cada capa tendrá la suya: no se reutilizan los puntos.)*
 - [ ] Cierre común hecho.
 
 ### Paso 8 · Suavizar los bordes
