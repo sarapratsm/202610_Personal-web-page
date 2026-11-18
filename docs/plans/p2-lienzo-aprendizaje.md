@@ -27,7 +27,6 @@ Cada paso tiene su checklist específica. Además, antes de darlo por terminado 
 - [ ] Sé explicar con mis propias palabras cada línea que he escrito.
 - [ ] No quedan `console.log` sueltos (los de depuración pasan por `log` / `DEBUG`), ni código comentado, ni estilos en línea que no deban estar.
 - [ ] Commit hecho. *(Decisión 2026-11-18: el formato del mensaje es libre cuando lo hago yo. Los que escribe el asistente van cortos, en español y sin prefijos.)*
-- [ ] Marco el paso en la tabla de progreso y anoto lo que aprendí.
 
 ---
 
@@ -133,18 +132,20 @@ Cada paso tiene su checklist específica. Además, antes de darlo por terminado 
 ## FASE B — La mancha de acuarela (el corazón)
 
 ### Paso 6 · Color aleatorio con paleta
-- **Objetivo:** cada círculo con un color distinto de una paleta mía.
-- **Conceptos:** arrays, `Math.random`, `Math.floor`, color `hsl()`/`hsla()` y por qué es cómodo para variar tonos.
-- **Qué hago:** definir una paleta de 5-7 colores (idealmente de mi marca personal, ver `docs/diario-interno/analisis/marca-personal.md`, que es local y no se versiona) y elegir uno al azar. Crear una función pequeña `numeroAleatorio(min, max)` y usarla.
-- **Cómo sé que funciona:** los círculos salen de colores variados y siempre dentro de la paleta.
+- **Objetivo:** cada mancha con un color distinto de una paleta mía, con una pequeña variación de tono, y con la estructura lista para tener una paleta por página (paso 14).
+- **Conceptos:** arrays, objetos, `Math.random`, `Math.floor`, color `hsl()`/`hsla()` y por qué es cómodo para variar tonos.
+- **Qué hago:** definir una paleta de 4-6 colores guardados como `{ h, s, l }` (no como texto), de colores suaves. Elegir uno al azar y variar un poco su tono, saturación y luminosidad en cada mancha. Crear una función pequeña `numeroAleatorio(min, max)` y usarla.
+- **Pista:** guardar `h`, `s` y `l` por separado es lo que permite variarlos; con un texto `"hsl(350, 62%, 74%)"` no se puede.
+- **Cómo sé que funciona:** las manchas salen de colores variados pero siempre reconocibles como de la paleta.
 - 🟡 **Estado:** de momento uso un RGB aleatorio con `rgb(${random(255)} ...)`, sin paleta. Mi `random(number)` da un entero entre 0 y `number`, y no recibe mínimo y máximo como pide `numeroAleatorio(min, max)`.
 
 **✅ Checklist**
 - [ ] La paleta es una constante al principio del fichero, no está dentro de una función.
+- [ ] Cada color guarda `h`, `s` y `l` por separado.
 - [ ] `numeroAleatorio(min, max)` existe y la uso siempre, sin `Math.random()` suelto por el código.
 - [ ] En la consola, llamar 20 veces a `numeroAleatorio(5, 10)` devuelve siempre valores dentro del rango.
-- [ ] Tras 20 clics, todos los colores pertenecen a la paleta.
-- [ ] La paleta sale de mi marca personal o de una razón que sé explicar.
+- [ ] La variación de tono es pequeña: el color sigue siendo de la paleta.
+- [ ] Tras 20 clics, todos los colores se reconocen como de la paleta y ninguno es chillón.
 - [ ] Sé explicar por qué `hsl` es más cómodo que `rgb` para variar un color.
 - [ ] Cierre común hecho.
 
@@ -163,18 +164,19 @@ Cada paso tiene su checklist específica. Además, antes de darlo por terminado 
 - [x] El polígono está cerrado (`closePath`) y no le falta ningún lado.
 - [x] Cada clic genera una forma distinta.
 - [x] El número de puntos y la irregularidad son parámetros con nombre, no números mágicos.
+- [ ] Cada llamada a `crearPuntos` da una forma nueva. *(En el paso 11, cada capa tendrá la suya: no se reutilizan los puntos.)*
 - [ ] Cierre común hecho.
 
 ### Paso 8 · Suavizar los bordes
 - **Objetivo:** convertir el polígono en una forma redondeada.
 - **Conceptos:** `quadraticCurveTo(controlX, controlY, finalX, finalY)`, puntos medios entre vértices.
 - **Qué hago:** en vez de `lineTo`, usar cada vértice como punto de control y el punto medio con el siguiente como destino.
-- **Pista:** dibuja un papel con 5 puntos y marca los puntos medios para entender la idea antes de programarla. Recuerda cerrar la forma (el último punto enlaza con el primero).
+- **Pista:** dibuja un papel con 5 puntos y marca los puntos medios para entender la idea antes de programarla. Recuerda cerrar la forma (el último punto enlaza con el primero). Si ves que la forma sale algo torcida, dibuja los puntos medios y compara con dónde empieza tu `moveTo`.
 - **Cómo sé que funciona:** la forma parece una gota o charco, sin picos.
 
 **✅ Checklist**
 - [ ] No se ve ningún pico y la forma parece un charco.
-- [ ] 🔎 No hay un "corte" entre el último y el primer punto. *(Revísalo: mira en qué punto empieza el trazo con `moveTo` y qué hace `closePath` al final. Pruébalo con pocos puntos, por ejemplo 5, para verlo mejor.)*
+- [ ] 🔎 ¿En qué punto empieza el trazo con `moveTo` y en cuál termina la última curva? ¿Coinciden? *(Revísalo con pocos puntos, por ejemplo 5, para verlo mejor. Mira también qué hace `closePath` al final.)*
 - [x] La lógica está en una función reutilizable (`trazarCurva(puntos)`). *(La mía recibe también `ctx`: `trazarCurva(ctx, puntos)`, y está bien.)*
 - [ ] Puedo explicar con un dibujo en papel por qué usamos puntos medios.
 - [ ] Probado con 5 puntos y con 30 puntos, y la forma sigue siendo válida.
@@ -195,7 +197,7 @@ Cada paso tiene su checklist específica. Además, antes de darlo por terminado 
 - [ ] Cierre común hecho.
 
 ### Paso 10 · Degradado y borde de pigmento
-- **Objetivo:** centro más denso y borde más claro, con un fino anillo de pigmento.
+- **Objetivo:** centro más denso y borde más claro, con un fino anillo de pigmento cuyo grosor varía un poco de una mancha a otra.
 - **Conceptos:** `createRadialGradient`, `addColorStop`, `stroke`, `lineWidth`.
 - **Qué hago:** rellenar con un degradado radial en vez de color plano, y trazar el contorno con un color algo más oscuro y poco opaco.
 - **Cómo sé que funciona:** la mancha ya "parece" acuarela cuando la miro a un palmo de la pantalla.
@@ -204,22 +206,24 @@ Cada paso tiene su checklist específica. Además, antes de darlo por terminado 
 - [ ] Se distingue un centro más intenso y un borde más suave.
 - [ ] Los `addColorStop` van entre 0 y 1 y en orden creciente.
 - [ ] El radio exterior del degradado coincide con el tamaño de la mancha.
-- [ ] El borde es más oscuro y fino. *(Que no tiña lo que se dibuje después se cierra con `save()` / `restore()` en el paso 11.)*
+- [ ] El anillo es más oscuro y fino que el relleno, y no tiñe lo que se dibuje después. *(Esto último se cierra con `save()` / `restore()` en el paso 11.)*
+- [ ] El grosor del anillo varía un poco de una mancha a otra.
 - [ ] 30 clics seguidos no producen tirones.
 - [ ] Sé explicar qué dos círculos define `createRadialGradient`.
 - [ ] Cierre común hecho.
 
 ### Paso 11 · Capas
-- **Objetivo:** dar profundidad dibujando 3 formas superpuestas, cada una algo más pequeña.
+- **Objetivo:** dar profundidad dibujando 3 formas superpuestas, cada una algo más pequeña y algo más intensa.
 - **Conceptos:** bucle de capas, reutilizar tu función de forma irregular, `ctx.save()` / `ctx.restore()` (movido aquí desde el paso 9).
 - **Por qué `save()` / `restore()` aquí:** cada capa cambiará ajustes del contexto (opacidad, color, modo de mezcla). Sin guardar y restaurar, los ajustes de una capa se arrastran a la siguiente y a todo lo que se dibuje después. Aquí es donde se espera ver el problema.
-- **Cómo sé que funciona:** la mancha tiene zonas de distinta intensidad, no un solo tono.
+- **Pista:** cada capa se calcula a partir del número de capa `c` del bucle: su radio baja con `c` y su opacidad sube con `c`. Una sola fórmula por valor, sin tres bloques copiados.
+- **Cómo sé que funciona:** la mancha tiene zonas de distinta intensidad, no un solo tono. El anillo de pigmento sigue siendo uno solo, en la capa exterior.
 
 **✅ Checklist**
 - [ ] Las 3 capas se dibujan con un bucle `for`, sin copiar y pegar el mismo bloque tres veces.
 - [ ] Cada capa tiene un radio menor que la anterior.
 - [ ] La opacidad o la intensidad varía entre capas.
-- [ ] Reutilizo las funciones de los pasos 7 y 8 en vez de duplicarlas.
+- [ ] Reutilizo las funciones de los pasos 7 y 8 en vez de duplicarlas, y cada capa tiene su propia forma irregular.
 - [ ] Comparando con una captura del paso 10, se nota más profundidad.
 - [ ] El número de capas es un parámetro con nombre.
 - [ ] Uso `save()` antes de cambiar los ajustes del contexto y `restore()` después.
@@ -230,13 +234,15 @@ Cada paso tiene su checklist específica. Además, antes de darlo por terminado 
 ### Paso 12 · Gotas y bruma
 - **Objetivo:** salpicaduras alrededor de la mancha principal.
 - **Conceptos:** posiciones aleatorias en un anillo (ángulo + distancia), tamaños variables, `ellipse` para gotas alargadas.
-- **Qué hago:** primero 10 gotas circulares; luego un 40 % alargadas orientadas hacia fuera; por último puntitos mínimos (bruma).
+- **Qué hago:** primero unas 10 gotas circulares a distinta distancia del centro; luego que alrededor del 40 % sean alargadas y estén orientadas hacia fuera; por último, puntitos mínimos más lejos (bruma).
+- **Pista:** mide la distancia de las gotas en múltiplos del radio de la mancha (por ejemplo, entre 0,8 y 2,5 veces), así las manchas grandes salpican más lejos que las pequeñas.
 - **Cómo sé que funciona:** el resultado ya se parece al wireframe (`docs/references/wireframes.html`). Compáralo con él y con tus capturas de pasos anteriores, y anota 3 diferencias para pulir.
 
 **✅ Checklist**
 - [ ] Las gotas salen en un anillo alrededor de la mancha, no encima.
 - [ ] Alrededor del 40 % de las gotas son alargadas y apuntan hacia fuera.
 - [ ] Hay una bruma de puntitos más lejos que las gotas.
+- [ ] La distancia de las gotas depende del radio de cada mancha.
 - [ ] Cantidades, tamaños y distancias están en constantes de configuración, no esparcidos por el código.
 - [ ] Hay una función separada (`dibujarGotas(...)`) que no mezcla su lógica con la de la mancha.
 - [ ] Hacer clic cerca del borde de la pantalla no da errores.
@@ -248,22 +254,40 @@ Cada paso tiene su checklist específica. Además, antes de darlo por terminado 
 ## FASE C — Integrarlo en una web real
 
 ### Paso 13 · Que el contenido conviva con la pintura
-- **Objetivo:** texto legible encima de manchas de cualquier color.
-- **Conceptos:** `backdrop-filter: blur()`, fondos `rgba`, contraste de color.
-- **Qué hago:** crear una clase `.glass-panel` y aplicarla a las tarjetas de `Index.cshtml`.
-- **Cómo sé que funciona:** puedo leer todo el texto aunque pinte justo detrás. Compruébalo también con la paleta más oscura.
+- **Objetivo:** texto legible encima de manchas de cualquier color: ningún texto queda directamente sobre el lienzo.
+- **Conceptos:** `backdrop-filter: blur()`, fondos `rgba`, contraste de color, variables CSS para el color del cristal.
+- **Qué hago:** crear una clase `.glass-panel` (con su color en una variable CSS) y aplicarla a las tarjetas de `Index.cshtml`. El pie también va translúcido, y deja espacio abajo para que los controles flotantes del paso 17 no tapen su contenido.
+- **Cómo sé que funciona:** puedo leer todo el texto aunque pinte justo detrás. Compruébalo también con la mancha más oscura que pueda salir.
 
 **✅ Checklist**
-- [ ] El texto es legible con manchas de la paleta clara y de la oscura detrás.
+- [ ] El texto es legible con manchas claras y oscuras detrás.
 - [ ] El contraste del texto cumple 4,5:1 (en el inspector, el selector de color de DevTools lo muestra).
 - [ ] Las tarjetas de proyectos también son legibles, no solo el panel principal.
 - [ ] Mantengo `-webkit-backdrop-filter` junto a `backdrop-filter` para Safari.
+- [ ] El color del cristal está en una variable CSS (`--glass`), no repetido en varias reglas.
+- [ ] El pie es translúcido y tiene margen inferior suficiente para los controles flotantes.
 - [ ] Todo el estilo está en clases reutilizables, sin `style` en línea.
 - [ ] Cierre común hecho.
 
-### Paso 14 · No perder la pintura al redimensionar
+### Paso 14 · Una paleta por página (la parte propia de MVC)
+- **Objetivo:** que cada página pinte con su propia paleta de colores suaves, sin que el JS tenga que saber en qué página está.
+- **Conceptos:** `ViewData` de Razor, atributos `data-*`, `element.dataset`, objeto con claves (diccionario), valor por defecto.
+- **Qué hago:** convertir mi paleta en un objeto con una paleta por clave (`inicio`, `proyectos`, `experiencia`, `contacto`, `error404`). Cada vista declara cuál usa con `ViewData` y `_Layout.cshtml` la escribe en el canvas como `data-paleta`. En `lienzo.js`, la leo con `dataset` y elijo la paleta. Paletas provisionales de `docs/references/README.md`: Inicio, rosas y melocotón; Proyectos, azules y lavanda; Experiencia y formación, verdes salvia; Contacto, melocotón y mantequilla; 404, lilas.
+- **Pista:** el JS no pregunta "¿en qué página estoy?": el HTML se lo dice. Así `lienzo.js` no cambia al añadir una página nueva.
+- **Cómo sé que funciona:** en Inicio salen rosas y melocotón, y al ir a otra página los colores cambian a los de esa página.
+
+**✅ Checklist**
+- [ ] Las paletas están en un único objeto al principio de `lienzo.js`.
+- [ ] El `data-paleta` lo escribe `_Layout.cshtml` a partir de `ViewData`, y ningún `if` del JS depende de la URL.
+- [ ] Cada vista existente declara su paleta (o usa la de por defecto, y sé decir cuál es y por qué).
+- [ ] Si `data-paleta` falta o tiene un nombre que no existe, la web no falla: usa una paleta por defecto.
+- [ ] Tras 20 clics en cada página, todos los colores son de la paleta de esa página.
+- [ ] Sé explicar cómo viaja el dato: `ViewData` → Razor → atributo HTML → `dataset` → JS.
+- [ ] Cierre común hecho.
+
+### Paso 15 · No perder la pintura al redimensionar
 - **Objetivo:** girar el móvil o cambiar el tamaño de ventana sin borrar la obra.
-- **Conceptos:** evento `resize`, canvas auxiliar en memoria, `drawImage`.
+- **Conceptos:** evento `resize` (o `ResizeObserver`, a investigar), canvas auxiliar en memoria, `drawImage`.
 - **Pista:** cambiar `canvas.width` borra el contenido. Antes de cambiarlo, copia el canvas a otro; después, devuélvelo.
 - **Cómo sé que funciona:** pinto, redimensiono la ventana y la pintura sigue ahí.
 
@@ -273,75 +297,98 @@ Cada paso tiene su checklist específica. Además, antes de darlo por terminado 
 - [ ] Cambiar el zoom del navegador tampoco la borra.
 - [ ] `resize` no se dispara cientos de veces seguidas (considero un *debounce*).
 - [ ] No creo un canvas auxiliar nuevo en cada evento sin necesidad.
+- [ ] Si el tamaño no cambia de verdad, no hago nada.
 - [ ] He decidido qué hacer al agrandar la ventana (zona vacía o pintura escalada) y sé justificarlo.
 - [ ] Sé explicar por qué asignar `canvas.width` borra el contenido.
 - [ ] Cierre común hecho.
 
-### Paso 15 · Controles: limpiar, guardar y cambiar paleta
-- **Objetivo:** tres botones funcionales.
-- **Conceptos:** `clearRect` (¡cuidado con el escalado!), `canvas.toDataURL('image/png')`, enlace `<a download>` creado por código, un `<select>` que cambia la paleta activa.
-- **Pista del guardado:** el canvas es transparente. Si descargas tal cual, no tiene fondo. Dibuja primero el color del papel en un canvas auxiliar.
-- **Cómo sé que funciona:** limpiar deja la pantalla en blanco, guardar descarga un PNG con fondo crema, y cambiar la paleta afecta a las siguientes manchas.
+### Paso 16 · Un toque, no un arrastre
+- **Objetivo:** en móvil, que deslizar el dedo para hacer scroll no llene la pantalla de manchas. Solo pinta un toque sin desplazamiento.
+- **Conceptos:** `pointerdown` + `pointerup` + `pointercancel`, distancia entre dos puntos (`Math.hypot`), umbral en constante, guardar el estado entre dos eventos.
+- **Qué hago:** en `pointerdown` solo recuerdo dónde empezó el toque; en `pointerup` pinto si el dedo se ha movido menos de unos pocos píxeles (y el scroll no ha cambiado). Si el navegador cancela el gesto (`pointercancel`), me olvido del toque. *Esto sustituye al listener único del paso 4: ahora hay tres.*
+- **Pista:** pregunta qué pasa con el ratón en escritorio: ¿sigue pintando justo al soltar? ¿Es un cambio notable respecto a pintar al pulsar?
+- **Cómo sé que funciona:** en el modo dispositivo de F12, tocar pinta y deslizar para hacer scroll no pinta. Con el ratón, un clic sigue pintando.
+
+**✅ Checklist**
+- [ ] Un toque quieto pinta **una** mancha, en el punto donde se tocó.
+- [ ] Deslizar para hacer scroll no pinta ninguna.
+- [ ] Si el navegador cancela el gesto, no queda un toque "colgado" que pinte después.
+- [ ] El umbral de movimiento está en una constante con nombre.
+- [ ] El botón derecho y el central siguen sin pintar (mi decisión del paso 4).
+- [ ] Un clic de ratón en escritorio sigue pintando.
+- [ ] Sé explicar por qué `pointerdown` solo no basta en móvil.
+- [ ] Cierre común hecho.
+
+### Paso 17 · Controles: limpiar y apagar
+- **Objetivo:** dos controles flotantes abajo a la derecha, en una píldora translúcida: un botón **Limpiar** y un interruptor **Lienzo** (encender/apagar).
+- **Conceptos:** `clearRect` (¡cuidado con el escalado!), `<button type="button">`, `role="switch"` + `aria-checked`, `aria-label`, `position: fixed`, mostrar/ocultar con el atributo `hidden`.
+- **Qué hago:** el botón borra todo el lienzo. El interruptor, al apagarse, borra las manchas, deja de pintar y oculta "Limpiar"; al encenderse, el lienzo vuelve en blanco y se puede pintar de nuevo. En escritorio muestran icono y texto; en móvil, solo icono (con `aria-label`).
+- **Pista:** si el contexto está escalado por `devicePixelRatio`, borrar `width × height` en unidades CSS deja restos en las esquinas. Piensa en qué unidades trabaja `clearRect`.
+- **Cómo sé que funciona:** limpiar deja la pantalla en blanco; apagar borra, deja de pintar y esconde "Limpiar"; encender lo devuelve todo.
+- **Fuera de alcance:** no hay botón de guardar imagen ni selector de paleta (cada página trae la suya, paso 14).
 
 **✅ Checklist**
 - [ ] Limpiar borra **todo**, incluidas las esquinas, y también con zoom o pantalla retina.
-- [ ] Guardar descarga un PNG que se abre bien y tiene fondo (no transparente).
-- [ ] Cambiar la paleta afecta solo a las manchas nuevas.
-- [ ] Pulsar los controles no pinta (excepción al paso 5: llevan `data-no-splash` y se excluyen con `closest`), y el resto de enlaces y botones siguen pintando.
-- [ ] Los botones son `<button type="button">`, no `<div>` clicables.
-- [ ] Los botones con solo icono tienen `aria-label`.
-- [ ] Se pueden usar con teclado (`Tab` + `Enter`).
+- [ ] Apagar borra las manchas, deja de pintar y oculta "Limpiar"; encender vuelve a mostrarlo y el lienzo está en blanco.
+- [ ] Pulsar los controles no pinta: son `<button>` y el filtro de botones los excluye.
+- [ ] Los controles son `<button type="button">`, no `<div>` clicables.
+- [ ] El interruptor lleva `role="switch"` y `aria-checked`, y los controles con solo icono tienen `aria-label`.
+- [ ] Se pueden usar con teclado (`Tab` + `Enter` o espacio) y se ve el foco.
+- [ ] En móvil solo se ve el icono y no tapan el contenido del pie.
 - [ ] Cierre común hecho.
 
-### Paso 16 · La parte propia de MVC: conservar la obra entre páginas
-- **Objetivo:** que al ir de Inicio a Proyectos la pintura no desaparezca.
-- **Conceptos:** cada navegación recarga la página y vacía el canvas, `sessionStorage`, `toDataURL`, `new Image()` + `onload`, `try/catch` (el almacenamiento puede fallar).
-- **Qué hago:** tras cada mancha, guardar una captura del canvas (con un pequeño retardo para no guardar en cada gota). Al cargar la página, restaurarla.
-- **Reflexión:** ¿qué pasa si la captura es muy grande? ¿qué límite tiene `sessionStorage`? ¿cómo lo manejo?
-- **Cómo sé que funciona:** pinto, navego a otra vista y la pintura sigue allí. Si cierro la pestaña, se borra.
+### Paso 18 · Recordar el apagado entre páginas
+- **Objetivo:** que, si apago el lienzo, siga apagado al cambiar de página durante la visita. Cada visita nueva empieza encendido. La pintura **no** se guarda: cada página empieza en blanco.
+- **Conceptos:** cada navegación recarga la página y reinicia el JS; `sessionStorage` (vive mientras dure la pestaña); `try/catch` (el almacenamiento puede fallar); valores guardados como texto.
+- **Qué hago:** al apagar o encender, guardo ese estado en `sessionStorage`. Al cargar la página, lo leo y arranco encendida o apagada según corresponda.
+- **Reflexión:** ¿qué pasa si el navegador bloquea el almacenamiento (ventana privada con datos bloqueados)? ¿Debe romperse algo?
+- **Cómo sé que funciona:** apago en Inicio, voy a otra página y sigue apagado. Cierro la pestaña, abro otra y está encendido.
+- **Nota:** esto sustituye al plan anterior (guardar una captura del canvas). Se descarta porque el documento de referencia pide que cada página empiece en blanco. Guardar la obra queda en "Ideas extra".
 
 **✅ Checklist**
-- [ ] Pinto, voy a Privacy y vuelvo: la pintura sigue allí.
-- [ ] Cierro la pestaña y abro otra: el lienzo está vacío.
-- [ ] En F12 > Application > Session Storage veo mi clave y un tamaño razonable.
-- [ ] Lectura y escritura van dentro de `try/catch`; he probado a provocar un fallo (por ejemplo, guardar una cadena enorme).
-- [ ] Guardo con *debounce* (retardo), no en cada gota.
-- [ ] El botón de limpiar también borra lo guardado.
+- [ ] Apago en una página, navego a otra y el lienzo sigue apagado, sin parpadeo de pintura.
+- [ ] Cierro la pestaña y abro otra: el lienzo está encendido.
+- [ ] En F12 > Application > Session Storage veo mi clave con un valor claro.
+- [ ] Lectura y escritura van dentro de `try/catch`; si falla, el interruptor funciona en la página y la siguiente empieza encendida.
 - [ ] La clave tiene un nombre claro y con versión (`lienzo:v1`).
-- [ ] No hay un parpadeo visible al navegar (restauro en cuanto cargue la página).
-- [ ] Sé explicar qué límite tiene `sessionStorage` y qué hago si se supera.
+- [ ] Con el lienzo apagado, el botón "Limpiar" no aparece al cargar la página.
+- [ ] Al cambiar de página, el lienzo vuelve a empezar en blanco (decisión consciente, no un fallo).
+- [ ] Sé explicar qué diferencia hay entre `sessionStorage` y `localStorage`, y por qué elijo `sessionStorage`.
 - [ ] Cierre común hecho.
 
 ---
 
 ## FASE D — Pulido
 
-### Paso 17 · Calidad y accesibilidad
+### Paso 19 · Calidad y accesibilidad
 - Marcar el canvas con `aria-hidden="true"` (es decorativo).
 - Probar con teclado: todo lo importante debe seguir siendo accesible sin ratón.
 - Probar en móvil real o en modo dispositivo de F12: ¿se pinta al hacer scroll? ¿molesta al tocar?
 - Revisar rendimiento: pintar 100 manchas seguidas, ¿va fluido?
 - Actualizar `README.md` y `docs/definicion/stack-tecnologico.md` si añado alguna decisión (p. ej. "sin dependencias JS externas para el lienzo").
+- Revisar `docs/references/user-stories.md` (EP-02) y anotar las decisiones propias de este plan que difieran (por ejemplo, qué elementos pintan al pulsarlos).
 
 **✅ Checklist**
 - [ ] El canvas tiene `aria-hidden="true"`.
 - [ ] Puedo recorrer toda la web solo con teclado.
 - [ ] Lighthouse (DevTools > Lighthouse) da accesibilidad ≥ 90.
-- [ ] En móvil, hacer scroll con el dedo no llena la pantalla de manchas indeseadas.
+- [ ] En móvil, hacer scroll con el dedo no llena la pantalla de manchas indeseadas (paso 16).
 - [ ] 100 manchas seguidas no producen tirones (pestaña Performance si dudo).
-- [ ] He ofrecido o valorado una forma de desactivar el lienzo.
+- [ ] El interruptor del lienzo funciona y se entiende sin ratón (paso 17).
 - [ ] `DEBUG` está en `false` y no quedan `console.log` fuera de `log`, variables sin usar ni código muerto. *(Decisión 2026-11-18: `DEBUG` y `log` se quedan en el código final, desactivados.)*
 - [ ] Los comentarios explican el **porqué**, no repiten lo que hace cada línea.
-- [ ] `README.md` y `stack-tecnologico.md` actualizados.
+- [ ] `README.md`, `stack-tecnologico.md` y `user-stories.md` revisados y actualizados si hace falta.
 - [ ] Cierre común hecho.
 
-### Paso 18 · Revisión final con la documentación
-- **Decisión (2026-11-18):** no hay prototipo ni solucionario. La revisión final se hace contra la documentación web y el wireframe.
+### Paso 20 · Revisión final con la documentación
+- **Decisión (2026-11-18):** no hay prototipo ni solucionario. La revisión final se hace contra la documentación web, el wireframe y las user stories de EP-02.
 - Repasar cada API usada (canvas, eventos, `sessionStorage`...) en MDN y comprobar que la uso como describe.
+- Recorrer los criterios de aceptación y los casos de prueba de EP-02.US-01, US-02 y US-03 en `docs/references/user-stories.md`, y marcar los que cumple mi lienzo y los que no (anotando por qué, si la diferencia es una decisión mía).
 - Comparar el resultado con `docs/references/wireframes.html` y anotar qué mejoraría y por qué.
 
 **✅ Checklist**
 - [ ] He releído en MDN la documentación de cada API que uso.
+- [ ] He pasado los casos de prueba QA de EP-02 y sé explicar cada diferencia con el documento.
 - [ ] Tengo anotadas al menos 3 mejoras posibles frente al wireframe.
 - [ ] Para cada mejora sé decir por qué la haría y qué concepto nuevo necesito.
 - [ ] Sé explicar con mis palabras cada función del fichero.
@@ -351,9 +398,12 @@ Cada paso tiene su checklist específica. Además, antes de darlo por terminado 
 
 ## Ideas extra (cuando todo lo anterior esté hecho)
 
+- **Guardar la obra entre páginas** (`toDataURL` en `sessionStorage`, con `new Image()` + `onload` para restaurarla y *debounce* al guardar): la idea original del paso 18.
+- **Descargar la obra como PNG** con fondo crema (canvas auxiliar, `toDataURL`, `<a download>`).
 - **Pintar arrastrando** (`pointermove` mientras el botón está pulsado) en vez de solo clic.
+- **Elegir la paleta a mano** con un `<select>`.
+- **Modo oscuro** (EP-01.US-03): el lienzo sigue claro y solo cambian los paneles.
 - **Sonido** con la Web Audio API nativa (sin Tone.js).
-- **Colores de marca** extraídos de `docs/diario-interno/analisis/marca-personal.md` (local) como paleta propia.
+- **Colores de marca** extraídos de `docs/diario-interno/analisis/marca-personal.md` (local) como paletas propias.
 - **Salpicar al cargar la sección de proyectos**, cada proyecto con su color.
-- **Respetar `prefers-reduced-motion`** y ofrecer un interruptor para desactivar el lienzo.
-
+- **Respetar `prefers-reduced-motion`** y apagar el lienzo por defecto si está activo.
