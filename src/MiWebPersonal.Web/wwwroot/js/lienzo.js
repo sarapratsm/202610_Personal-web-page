@@ -193,8 +193,3 @@ function iniciarLienzo() {
 //=========LINEA DE ARRANQUE=========
 iniciarLienzo();
 
-if (DEBUG)
-    for (let x = 0; x < 5; x++) {
-        console.log('Numero aleatorio:', numeroAleatorio(5, 10));
-    }
-}
