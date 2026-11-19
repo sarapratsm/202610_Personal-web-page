@@ -2,8 +2,9 @@
 //=========CONSTANTES=========
 const DEBUG = true;
 
-//Constantes de eventos
+//Constantes objetivas (no configurables, son las que son)
 const BOTON_PRINCIPAL = 0; //El botón principal del ratón es el izquierdo, el secundario es el derecho y el central es la rueda. https://developer.mozilla.org/en-US/docs/Web/API/MouseEvent/button
+const MAX_TONO_HSLA = 360; //Valor máximo de tono en el modelo de color HSL. https://developer.mozilla.org/en-US/docs/Web/CSS/color_value/hsl
 
 //Constantes de configuración
 const RADIO_MINIMO = 20;
@@ -11,13 +12,15 @@ const RADIO_MAXIMO = 40;
 const VARIACION_RADIO_MINIMA = 10;
 const VARIACION_RADIO_MAXIMA = 15;
 const VARIACION_TONO = 8;
-const VARIACIÓN_SATURACIÓN = 5;
+const VARIACION_SATURACION = 5;
+const VARIACION_LUMINOSIDAD = 5;
 const NUMERO_PUNTOS = 10; //Número de puntos que se crean para formar la curva. Cuantos más puntos, más suave será la curva, pero más costoso será dibujarla.
 const OPACIDAD = 0.3; //Opacidad de la pintura. Cuanto más baja, más transparente será la pintura y más se mezclará con los colores de fondo y con otras pinturas.
 const COMPOSICION = 'multiply'; //Modo de composición de la pintura. https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/globalCompositeOperation
 
+
 // Paleta de colores
-const PALETA_COLORES = {
+const PALETAS = {
     inicio: { nombre: "rosas y melocotón", colores: [{ h: 350, s: 62, l: 74 }, { h: 15, s: 70, l: 76 }, { h: 330, s: 45, l: 78 }, { h: 28, s: 72, l: 78 }] },
     proyectos: { nombre: "azules y lavanda", colores: [{ h: 205, s: 58, l: 72 }, { h: 225, s: 48, l: 76 }, { h: 190, s: 45, l: 70 }, { h: 255, s: 42, l: 78 }] },
     experiencia: { nombre: "verdes salvia", colores: [{ h: 140, s: 32, l: 70 }, { h: 100, s: 30, l: 72 }, { h: 165, s: 34, l: 68 }, { h: 65, s: 42, l: 76 }] },
@@ -37,9 +40,9 @@ function log(message) {
 }
 
 /***
- * Genera un número aleatorio entero entre 0 y el número especificado (inclusive).
- * @param {number} max - El valor máximo (inlcuido)
+ * Genera un número aleatorio entero entre el valor minimo y maximo definidos
  * @param {number} min - El valor mínimo (incluido)
+ * @param {number} max - El valor máximo (inlcuido)
  * @returns {number} Un número aleatorio entero en el rango [min, max]
  */
 function numeroAleatorio(min, max) {
@@ -69,20 +72,19 @@ function corregirDimensiones(lienzo, ctx) {
  */
 function mostrarDimensiones(lienzo) {
     if (DEBUG) {
-        if (DEBUG) {
-            //No utilitzo la funció log aqui per no haver de comprovar el if(DEBUG) a cada linea...
-            console.log("------------")
-            console.log("[DEBUG] Dimensiones del lienzo: ", lienzo.width, 'x', lienzo.height); //La cuadrícula interna de píxeles sobre la que se dibuja ~=resolucion de la foto
-            console.log("[DEBUG] Ratio: ", lienzo.width / lienzo.height);
-            console.log("[DEBUG] Dimensiones del lienzo cliente (cómo lo dibuja el navegador): ", lienzo.clientWidth, 'x', lienzo.clientHeight); //Cuánto ocupa en pantalla, en píxeles CSS ~=marco de la foto
-            console.log("[DEBUG] Ratio: ", lienzo.clientWidth / lienzo.clientHeight);
-            //Las dos ratios deben coincidir para que las formas no salgan deformadas.
-            console.log("[DEBUG] Dimensiones de la página: ", document.documentElement.clientWidth
-                , 'x', document.documentElement.clientHeight);
-            console.log("[DEBUG] DevicePixelRatio:", window.devicePixelRatio) //Cuántos píxeles físicos de tu monitor hay por cada píxel CSS
-            console.log("------------");
-        }
+        //No utilitzo la funció log aqui per no haver de comprovar el if(DEBUG) a cada linea...
+        console.log("------------")
+        console.log("[DEBUG] Dimensiones del lienzo: ", lienzo.width, 'x', lienzo.height); //La cuadrícula interna de píxeles sobre la que se dibuja ~=resolucion de la foto
+        console.log("[DEBUG] Ratio: ", lienzo.width / lienzo.height);
+        console.log("[DEBUG] Dimensiones del lienzo cliente (cómo lo dibuja el navegador): ", lienzo.clientWidth, 'x', lienzo.clientHeight); //Cuánto ocupa en pantalla, en píxeles CSS ~=marco de la foto
+        console.log("[DEBUG] Ratio: ", lienzo.clientWidth / lienzo.clientHeight);
+        //Las dos ratios deben coincidir para que las formas no salgan deformadas.
+        console.log("[DEBUG] Dimensiones de la página: ", document.documentElement.clientWidth
+            , 'x', document.documentElement.clientHeight);
+        console.log("[DEBUG] DevicePixelRatio:", window.devicePixelRatio) //Cuántos píxeles físicos de tu monitor hay por cada píxel CSS
+        console.log("------------");
     }
+
 }
 
 /***
@@ -132,24 +134,27 @@ function trazarCurva(ctx, puntos) {
     ctx.closePath();
 }
 
-const MAX_TONO_HSLA = 360; //Valor máximo de tono en el modelo de color HSL. https://developer.mozilla.org/en-US/docs/Web/CSS/color_value/hsl
-const MAX_SATURACION_HSLA = 100; //Valor máximo de saturación en el modelo de color HSL. https://developer.mozilla.org/en-US/docs/Web/CSS/color_value/hsl
 
 /**
  * Pinta un lienzo con una forma geométrica en las coordenadas especificadas.
  * @param {CanvasRenderingContext2D} ctx - El contexto del canvas.
  * @param {number} x - La coordenada x del centro de la forma.
  * @param {number} y - La coordenada y del centro de la forma.
+ * @param {array} paleta - Paleta de colores sobre la que se variará un color 
  * @see https://developer.mozilla.org/es/docs/Web/API/Canvas_API/Tutorial/Drawing_shapes
  * @see https://developer.mozilla.org/es/docs/Web/API/CanvasRenderingContext2D
  * @see https://developer.mozilla.org/es/docs/Learn_web_development/Core/Scripting/Events
  */
 function pintarLienzo(ctx, x, y, paleta) {
-    const radio = Math.floor(Math.random() * (RADIO_MAXIMO - RADIO_MINIMO + 1)) + RADIO_MINIMO;
-    const color = paleta[Math.floor(Math.random() * paleta.length)];
+    const radio = numeroAleatorio(RADIO_MINIMO, RADIO_MAXIMO);
+    const color = paleta[numeroAleatorio(0, paleta.length - 1)];
     const variacionTono = numeroAleatorio(-VARIACION_TONO, VARIACION_TONO);
-    const variacionSaturacion = numeroAleatorio(-VARIACIÓN_SATURACIÓN, VARIACIÓN_SATURACIÓN);
-    const colorVariado = `hsla(${(color.h + variacionTono + MAX_TONO_HSLA) % MAX_TONO_HSLA}, ${(color.s + variacionSaturacion + MAX_SATURACION_HSLA) % MAX_SATURACION_HSLA}%, ${color.l}%, ${OPACIDAD})`;
+    const variacionSaturacion = numeroAleatorio(-VARIACION_SATURACION, VARIACION_SATURACION);
+    const variacionLuminosidad = numeroAleatorio(-VARIACION_LUMINOSIDAD, VARIACION_LUMINOSIDAD);
+    const h = (color.h + variacionTono + MAX_TONO_HSLA) % MAX_TONO_HSLA;
+    const s = color.s + variacionSaturacion;
+    const l = color.l + variacionLuminosidad;
+    const colorVariado = `hsla(${h}, ${s}%, ${l}%, ${OPACIDAD})`;
     const puntos = crearPuntos(x, y, radio, NUMERO_PUNTOS);
 
     ctx.fillStyle = colorVariado;
@@ -159,6 +164,7 @@ function pintarLienzo(ctx, x, y, paleta) {
 }
 
 //=========FUNCIÓN PRINCIPAL=========
+
 function iniciarLienzo() {
     //Buscar y validar 
     const lienzo = document.getElementById("canvas-lienzo");
@@ -177,12 +183,12 @@ function iniciarLienzo() {
     //Añadir listener de pintura
     document.addEventListener("pointerdown", (evento) => {         //Ponemos el listener en el documento para que el click en cualquier lugar del documento active trigger del listener
         if (evento.button !== BOTON_PRINCIPAL) return; //Solo el botón principal activa el event listener. https://developer.mozilla.org/en-US/docs/Web/API/MouseEvent/button 
-        if (evento.target.closest('button') || evento.target.closest('selector')) return; //Si el click es en un botón o selector, no pintamos. https://developer.mozilla.org/en-US/docs/Web/API/Element/closest'))
+        if (evento.target.closest('button') || evento.target.closest('select')) return; //Si el click es en un botón o selector, no pintamos. https://developer.mozilla.org/en-US/docs/Web/API/Element/closest'))
         const rect = lienzo.getBoundingClientRect();
         const x = evento.clientX - rect.left;
         const y = evento.clientY - rect.top;
         //ClientX es la posición del click en la ventana *visible* del navegador (!=pageX, que es todo el html incluyendo scroll), y rect.left es la posición del lienzo en la ventana del navegador. Restando obtenemos la posición relativa al lienzo.
-        pintarLienzo(ctx, x, y, PALETA_COLORES.inicio.colores); //En el futuro cada página tendrá su propia paleta de colores.
+        pintarLienzo(ctx, x, y, PALETAS.inicio.colores); //En el futuro cada página tendrá su propia paleta de colores.
         log(" Estic pintant!! :3");
 
     })
