@@ -1,4 +1,4 @@
-﻿//Script de lienzo de la página web personal. Cada click crea pintura en el liezo :3
+﻿//Script de lienzo de la página web personal. Cada click crea pintura en el lienzo :3
 //=========CONSTANTES=========
 const DEBUG = true;
 
@@ -40,9 +40,9 @@ function log(message) {
 }
 
 /**
- * Genera un número aleatorio entero entre el valor minimo y maximo definidos
+ * Genera un número aleatorio entero entre el valor mínimo y máximo definidos
  * @param {number} min - El valor mínimo (incluido)
- * @param {number} max - El valor máximo (inlcuido)
+ * @param {number} max - El valor máximo (incluido)
  * @returns {number} Un número aleatorio entero en el rango [min, max]
  */
 function numeroAleatorio(min, max) {
