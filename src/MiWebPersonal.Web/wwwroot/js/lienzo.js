@@ -10,12 +10,12 @@ const MAX_TONO_HSLA = 360; //Valor máximo de tono en el modelo de color HSL. ht
 const RADIO_MINIMO = 20;
 const RADIO_MAXIMO = 40;
 const VARIACION_RADIO_MINIMA = 10;
-const VARIACION_RADIO_MAXIMA = 15;
+const VARIACION_RADIO_MAXIMA = 50;
 const VARIACION_TONO = 8;
 const VARIACION_SATURACION = 5;
 const VARIACION_LUMINOSIDAD = 5;
-const NUMERO_PUNTOS = 10; //Número de puntos que se crean para formar la curva. Cuantos más puntos, más suave será la curva, pero más costoso será dibujarla.
-const OPACIDAD = 0.3; //Opacidad de la pintura. Cuanto más baja, más transparente será la pintura y más se mezclará con los colores de fondo y con otras pinturas.
+const NUMERO_PUNTOS = 16; //Número de puntos que se crean para formar la curva. Cuantos más puntos, más suave será la curva, pero más costoso será dibujarla.
+const OPACIDAD = 0.5; //Opacidad de la pintura. Cuanto más baja, más transparente será la pintura y más se mezclará con los colores de fondo y con otras pinturas.
 const COMPOSICION = 'multiply'; //Modo de composición de la pintura. https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/globalCompositeOperation
 
 
