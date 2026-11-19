@@ -17,7 +17,7 @@ const OPACIDAD = 0.3; //Opacidad de la pintura. Cuanto más baja, más transpare
 const COMPOSICION = 'multiply'; //Modo de composición de la pintura. https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/globalCompositeOperation
 
 // Paleta de colores
-const PALETAS = {
+const PALETA_COLORES = {
     inicio: { nombre: "rosas y melocotón", colores: [{ h: 350, s: 62, l: 74 }, { h: 15, s: 70, l: 76 }, { h: 330, s: 45, l: 78 }, { h: 28, s: 72, l: 78 }] },
     proyectos: { nombre: "azules y lavanda", colores: [{ h: 205, s: 58, l: 72 }, { h: 225, s: 48, l: 76 }, { h: 190, s: 45, l: 70 }, { h: 255, s: 42, l: 78 }] },
     experiencia: { nombre: "verdes salvia", colores: [{ h: 140, s: 32, l: 70 }, { h: 100, s: 30, l: 72 }, { h: 165, s: 34, l: 68 }, { h: 65, s: 42, l: 76 }] },
@@ -132,6 +132,9 @@ function trazarCurva(ctx, puntos) {
     ctx.closePath();
 }
 
+const MAX_TONO_HSLA = 360; //Valor máximo de tono en el modelo de color HSL. https://developer.mozilla.org/en-US/docs/Web/CSS/color_value/hsl
+const MAX_SATURACION_HSLA = 100; //Valor máximo de saturación en el modelo de color HSL. https://developer.mozilla.org/en-US/docs/Web/CSS/color_value/hsl
+
 /**
  * Pinta un lienzo con una forma geométrica en las coordenadas especificadas.
  * @param {CanvasRenderingContext2D} ctx - El contexto del canvas.
@@ -141,12 +144,15 @@ function trazarCurva(ctx, puntos) {
  * @see https://developer.mozilla.org/es/docs/Web/API/CanvasRenderingContext2D
  * @see https://developer.mozilla.org/es/docs/Learn_web_development/Core/Scripting/Events
  */
-function pintarLienzo(ctx, x, y) {
+function pintarLienzo(ctx, x, y, paleta) {
     const radio = Math.floor(Math.random() * (RADIO_MAXIMO - RADIO_MINIMO + 1)) + RADIO_MINIMO;
-    const rndCol = `rgb(${numeroAleatorio(0, 255)} ${numeroAleatorio(0, 255)} ${numeroAleatorio(0, 255)} / ${OPACIDAD})`;
+    const color = paleta[Math.floor(Math.random() * paleta.length)];
+    const variacionTono = numeroAleatorio(-VARIACION_TONO, VARIACION_TONO);
+    const variacionSaturacion = numeroAleatorio(-VARIACIÓN_SATURACIÓN, VARIACIÓN_SATURACIÓN);
+    const colorVariado = `hsla(${(color.h + variacionTono + MAX_TONO_HSLA) % MAX_TONO_HSLA}, ${(color.s + variacionSaturacion + MAX_SATURACION_HSLA) % MAX_SATURACION_HSLA}%, ${color.l}%, ${OPACIDAD})`;
     const puntos = crearPuntos(x, y, radio, NUMERO_PUNTOS);
 
-    ctx.fillStyle = rndCol;
+    ctx.fillStyle = colorVariado;
     ctx.globalCompositeOperation = COMPOSICION; //Para que los colores se mezclen al superponerse
     trazarCurva(ctx, puntos);
     ctx.fill();
@@ -176,7 +182,7 @@ function iniciarLienzo() {
         const x = evento.clientX - rect.left;
         const y = evento.clientY - rect.top;
         //ClientX es la posición del click en la ventana *visible* del navegador (!=pageX, que es todo el html incluyendo scroll), y rect.left es la posición del lienzo en la ventana del navegador. Restando obtenemos la posición relativa al lienzo.
-        pintarLienzo(ctx, x, y);
+        pintarLienzo(ctx, x, y, PALETA_COLORES.inicio.colores); //En el futuro cada página tendrá su propia paleta de colores.
         log(" Estic pintant!! :3");
 
     })
