@@ -39,7 +39,7 @@ function log(message) {
         console.log("[DEBUG]", message);
 }
 
-/***
+/**
  * Genera un número aleatorio entero entre el valor minimo y maximo definidos
  * @param {number} min - El valor mínimo (incluido)
  * @param {number} max - El valor máximo (inlcuido)
@@ -50,7 +50,7 @@ function numeroAleatorio(min, max) {
 }
 
 
-/***
+/**
  * Corrige las dimensiones del lienzo para que coincidan con las dimensiones del cliente y ajusta la escala del contexto de dibujo.
  * @param {HTMLCanvasElement} lienzo - El elemento canvas que se quiere corregir.
  * @param {CanvasRenderingContext2D} ctx - El contexto de dibujo del lienzo.
@@ -66,7 +66,7 @@ function corregirDimensiones(lienzo, ctx) {
     mostrarDimensiones(lienzo);
 }
 
-/***
+/**
  * Muestra las dimensiones del lienzo y del cliente en la consola si DEBUG es true.
  * @param {HTMLCanvasElement} lienzo - El elemento canvas del que se quieren mostrar las dimensiones.
  */
@@ -87,7 +87,7 @@ function mostrarDimensiones(lienzo) {
 
 }
 
-/***
+/**
  * Crea un array de puntos distribuidos uniformemente en un círculo con centro (cx, cy) y radio especificado.
  * @param {number} cx - La coordenada x del centro del círculo.
  * @param {number} cy - La coordenada y del centro del círculo.
@@ -109,7 +109,7 @@ function crearPuntos(cx, cy, radio, n) {
     return puntos;
 }
 
-/***
+/**
  * Traza una curva suave a través de los puntos dados en el contexto del canvas.
  * @param {CanvasRenderingContext2D} ctx - El contexto del canvas donde se dibujará la curva.
  * @param {Array} puntos - Un array de objetos con propiedades x e y que representan los puntos a través de los cuales se trazará la curva.
