@@ -8,10 +8,23 @@ const BOTON_PRINCIPAL = 0; //El botón principal del ratón es el izquierdo, el 
 //Constantes de configuración
 const RADIO_MINIMO = 20;
 const RADIO_MAXIMO = 40;
-const VARIACION_RADIO = 10; //Variación aleatoria del radio para que no queden todos los puntos exactamente en el mismo círculo. Cuanto más alto, más irregular será la forma de la pintura.
+const VARIACION_RADIO_MINIMA = 10;
+const VARIACION_RADIO_MAXIMA = 15;
+const VARIACION_TONO = 8;
+const VARIACIÓN_SATURACIÓN = 5;
 const NUMERO_PUNTOS = 10; //Número de puntos que se crean para formar la curva. Cuantos más puntos, más suave será la curva, pero más costoso será dibujarla.
 const OPACIDAD = 0.3; //Opacidad de la pintura. Cuanto más baja, más transparente será la pintura y más se mezclará con los colores de fondo y con otras pinturas.
 const COMPOSICION = 'multiply'; //Modo de composición de la pintura. https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/globalCompositeOperation
+
+// Paleta de colores
+const PALETAS = {
+    inicio: { nombre: "rosas y melocotón", colores: [{ h: 350, s: 62, l: 74 }, { h: 15, s: 70, l: 76 }, { h: 330, s: 45, l: 78 }, { h: 28, s: 72, l: 78 }] },
+    proyectos: { nombre: "azules y lavanda", colores: [{ h: 205, s: 58, l: 72 }, { h: 225, s: 48, l: 76 }, { h: 190, s: 45, l: 70 }, { h: 255, s: 42, l: 78 }] },
+    experiencia: { nombre: "verdes salvia", colores: [{ h: 140, s: 32, l: 70 }, { h: 100, s: 30, l: 72 }, { h: 165, s: 34, l: 68 }, { h: 65, s: 42, l: 76 }] },
+    contacto: { nombre: "melocotón y mantequilla", colores: [{ h: 28, s: 78, l: 76 }, { h: 45, s: 72, l: 74 }, { h: 12, s: 62, l: 78 }, { h: 350, s: 52, l: 80 }] },
+    error404: { nombre: "lilas", colores: [{ h: 275, s: 42, l: 76 }, { h: 300, s: 36, l: 78 }, { h: 250, s: 38, l: 74 }] }
+};
+
 
 //=========FUNCIONES AUXILIARES=========
 /**
@@ -25,12 +38,14 @@ function log(message) {
 
 /***
  * Genera un número aleatorio entero entre 0 y el número especificado (inclusive).
- * @param {number} number - El valor máximo (inclusive) para el número aleatorio.
- * @returns {number} Un número aleatorio entero entre 0 y el número especificado.
+ * @param {number} max - El valor máximo (inlcuido)
+ * @param {number} min - El valor mínimo (incluido)
+ * @returns {number} Un número aleatorio entero en el rango [min, max]
  */
-function random(number) {
-    return Math.floor(Math.random() * (number + 1));
+function numeroAleatorio(min, max) {
+    return Math.floor(Math.random() * (max - min + 1) + min);
 }
+
 
 /***
  * Corrige las dimensiones del lienzo para que coincidan con las dimensiones del cliente y ajusta la escala del contexto de dibujo.
@@ -85,8 +100,8 @@ function crearPuntos(cx, cy, radio, n) {
     for (let i = 0; i < n; i++) {
         const angle = (i / n) * 2 * Math.PI;
         puntos[i] = {
-            x: cx + Math.cos(angle) * (radio + random(VARIACION_RADIO)),
-            y: cy + Math.sin(angle) * (radio + random(VARIACION_RADIO))
+            x: cx + Math.cos(angle) * (radio + numeroAleatorio(VARIACION_RADIO_MINIMA, VARIACION_RADIO_MAXIMA)),
+            y: cy + Math.sin(angle) * (radio + numeroAleatorio(VARIACION_RADIO_MINIMA, VARIACION_RADIO_MAXIMA))
         };
     }
     return puntos;
@@ -128,7 +143,7 @@ function trazarCurva(ctx, puntos) {
  */
 function pintarLienzo(ctx, x, y) {
     const radio = Math.floor(Math.random() * (RADIO_MAXIMO - RADIO_MINIMO + 1)) + RADIO_MINIMO;
-    const rndCol = `rgb(${random(255)} ${random(255)} ${random(255)} / ${OPACIDAD})`;
+    const rndCol = `rgb(${numeroAleatorio(0, 255)} ${numeroAleatorio(0, 255)} ${numeroAleatorio(0, 255)} / ${OPACIDAD})`;
     const puntos = crearPuntos(x, y, radio, NUMERO_PUNTOS);
 
     ctx.fillStyle = rndCol;
@@ -156,7 +171,7 @@ function iniciarLienzo() {
     //Añadir listener de pintura
     document.addEventListener("pointerdown", (evento) => {         //Ponemos el listener en el documento para que el click en cualquier lugar del documento active trigger del listener
         if (evento.button !== BOTON_PRINCIPAL) return; //Solo el botón principal activa el event listener. https://developer.mozilla.org/en-US/docs/Web/API/MouseEvent/button 
-        if (evento.target.closest('button')||evento.target.closest('selector')) return; //Si el click es en un botón o selector, no pintamos. https://developer.mozilla.org/en-US/docs/Web/API/Element/closest'))
+        if (evento.target.closest('button') || evento.target.closest('selector')) return; //Si el click es en un botón o selector, no pintamos. https://developer.mozilla.org/en-US/docs/Web/API/Element/closest'))
         const rect = lienzo.getBoundingClientRect();
         const x = evento.clientX - rect.left;
         const y = evento.clientY - rect.top;
@@ -177,3 +192,9 @@ function iniciarLienzo() {
 
 //=========LINEA DE ARRANQUE=========
 iniciarLienzo();
+
+if (DEBUG)
+    for (let x = 0; x < 5; x++) {
+        console.log('Numero aleatorio:', numeroAleatorio(5, 10));
+    }
+}
