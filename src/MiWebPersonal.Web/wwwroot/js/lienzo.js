@@ -150,14 +150,14 @@ function trazarCurva(ctx, puntos) {
  * @param {CanvasRenderingContext2D} ctx - El contexto del canvas donde se creará el gradiente.
  * @param {number} x - La coordenada x del centro del gradiente.
  * @param {number} y - La coordenada y del centro del gradiente.
- * @param {number} radio - El radio del gradiente.
- * @param {string} color - El color del gradiente.
- * @see https://developer.mozilla.org/es/docs/Web/API/CanvasRenderingContext2D/createRadialGradient
+ * @param {number} radio - El radio exterior del gradiente: debe cubrir toda la mancha, porque fuera de él se repite el último color (transparente).
+ * @param {number} h - El tono del color (0-360).
+ * @param {number} l - La luminosidad del color, en porcentaje. Ojo: va antes que la saturación.
+ * @param {number} s - La saturación del color, en porcentaje.
+ * @see https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/createRadialGradient
  * @see https://developer.mozilla.org/en-US/docs/Web/API/CanvasGradient/addColorStop
- * @see https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/stroke
- * @see https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/lineWidth
  */
-function crearGradiente(ctx, x, y, radio, h, l, s) {
+function aplicarGradiente(ctx, x, y, radio, h, l, s) {
     const color = `hsla(${h}, ${s}%, ${l}%, ${OPACIDAD})`;
     const colorTransparente =  `hsla(${h}, ${s}%, ${l}%, 0)`;
     const gradiente = ctx.createRadialGradient(x, y, 0, x, y, radio);
@@ -191,7 +191,7 @@ function pintarLienzo(ctx, x, y, paleta) {
 
     ctx.globalCompositeOperation = COMPOSICION; //Para que los colores se mezclen al superponerse
     trazarCurva(ctx, puntos);
-    crearGradiente(ctx, x, y, RADIO_MAXIMO+VARIACION_RADIO_MAXIMA, h, l, s);
+    aplicarGradiente(ctx, x, y, RADIO_MAXIMO+VARIACION_RADIO_MAXIMA, h, l, s);
     ctx.fill();
 }
 
