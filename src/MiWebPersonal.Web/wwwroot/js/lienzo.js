@@ -145,6 +145,27 @@ function trazarCurva(ctx, puntos) {
     ctx.closePath();
 }
 
+/**
+ * Crea un gradiente radial en el contexto del canvas y lo asigna como relleno.
+ * @param {CanvasRenderingContext2D} ctx - El contexto del canvas donde se creará el gradiente.
+ * @param {number} x - La coordenada x del centro del gradiente.
+ * @param {number} y - La coordenada y del centro del gradiente.
+ * @param {number} radio - El radio del gradiente.
+ * @param {string} color - El color del gradiente.
+ * @see https://developer.mozilla.org/es/docs/Web/API/CanvasRenderingContext2D/createRadialGradient
+ * @see https://developer.mozilla.org/en-US/docs/Web/API/CanvasGradient/addColorStop
+ * @see https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/stroke
+ * @see https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/lineWidth
+ */
+function crearGradiente(ctx, x, y, radio, h, l, s) {
+    const color = `hsla(${h}, ${s}%, ${l}%, ${OPACIDAD})`;
+    const colorTransparente =  `hsla(${h}, ${s}%, ${l}%, 0)`;
+    const gradiente = ctx.createRadialGradient(x, y, 0, x, y, radio);
+    gradiente.addColorStop(0, color);
+    gradiente.addColorStop(1, colorTransparente);
+    ctx.fillStyle = gradiente;
+}
+
 
 /**
  * Pinta un lienzo con una forma geométrica en las coordenadas especificadas.
@@ -162,15 +183,15 @@ function pintarLienzo(ctx, x, y, paleta) {
     const variacionTono = numeroAleatorio(-VARIACION_TONO, VARIACION_TONO);
     const variacionSaturacion = numeroAleatorio(-VARIACION_SATURACION, VARIACION_SATURACION);
     const variacionLuminosidad = numeroAleatorio(-VARIACION_LUMINOSIDAD, VARIACION_LUMINOSIDAD);
-    const h = (color.h + variacionTono + MAX_TONO_HSLA) % MAX_TONO_HSLA; 
+    const h = (color.h + variacionTono + MAX_TONO_HSLA) % MAX_TONO_HSLA;
     const s = color.s + variacionSaturacion;
     const l = color.l + variacionLuminosidad;
-    const colorVariado = `hsla(${h}, ${s}%, ${l}%, ${OPACIDAD})`;
+
     const puntos = crearPuntos(x, y, radio, NUMERO_PUNTOS);
 
-    ctx.fillStyle = colorVariado;
     ctx.globalCompositeOperation = COMPOSICION; //Para que los colores se mezclen al superponerse
     trazarCurva(ctx, puntos);
+    crearGradiente(ctx, x, y, RADIO_MAXIMO+VARIACION_RADIO_MAXIMA, h, l, s);
     ctx.fill();
 }
 
