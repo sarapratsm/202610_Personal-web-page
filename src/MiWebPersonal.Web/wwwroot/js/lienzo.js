@@ -117,20 +117,24 @@ function crearPuntos(cx, cy, radio, n) {
 function trazarCurva(ctx, puntos) {
     if (!puntos || puntos.length === 0) return;
 
-    const pActual = puntos[0];
+    let pActual = puntos[0];
+    let pSiguiente;
+    let pMedioX, pMedioY;
+
     ctx.beginPath();
     ctx.moveTo(pActual.x, pActual.y); //Mover el cursor a la posición del primer punto
 
     for (let i = 0; i < puntos.length; i++) {
-        let pActual = puntos[i];
-        let pSiguiente = puntos[(i + 1) % puntos.length]; //El siguiente punto, o el primero si estamos en el último punto.
+         pActual = puntos[i];
+         pSiguiente = puntos[(i + 1) % puntos.length]; //El siguiente punto, o el primero si estamos en el último punto.
 
         //Punto medio entre los dos
-        let pMedioX = (pActual.x + pSiguiente.x) / 2;
-        let pMedioY = (pActual.y + pSiguiente.y) / 2;
+         pMedioX = (pActual.x + pSiguiente.x) / 2;
+         pMedioY = (pActual.y + pSiguiente.y) / 2;
 
         ctx.quadraticCurveTo(pActual.x, pActual.y, pMedioX, pMedioY); //Dibujar una curva cuadrática desde el punto actual hasta el punto medio, usando el punto actual como control.
     }
+    ctx.quadraticCurveTo(pActual.x, pActual.y, puntos[0].x, puntos[0].y); //Dibujar una curva cuadrática desde el último punto hasta el primer punto, usando el último punto como control.
     ctx.closePath();
 }
 
@@ -151,7 +155,7 @@ function pintarLienzo(ctx, x, y, paleta) {
     const variacionTono = numeroAleatorio(-VARIACION_TONO, VARIACION_TONO);
     const variacionSaturacion = numeroAleatorio(-VARIACION_SATURACION, VARIACION_SATURACION);
     const variacionLuminosidad = numeroAleatorio(-VARIACION_LUMINOSIDAD, VARIACION_LUMINOSIDAD);
-    const h = (color.h + variacionTono + MAX_TONO_HSLA) % MAX_TONO_HSLA;
+    const h = (color.h + variacionTono + MAX_TONO_HSLA) % MAX_TONO_HSLA; 
     const s = color.s + variacionSaturacion;
     const l = color.l + variacionLuminosidad;
     const colorVariado = `hsla(${h}, ${s}%, ${l}%, ${OPACIDAD})`;

@@ -137,16 +137,16 @@ Cada paso tiene su checklist específica. Además, antes de darlo por terminado 
 - **Qué hago:** definir una paleta de 4-6 colores guardados como `{ h, s, l }` (no como texto), de colores suaves. Elegir uno al azar y variar un poco su tono, saturación y luminosidad en cada mancha. Crear una función pequeña `numeroAleatorio(min, max)` y usarla.
 - **Pista:** guardar `h`, `s` y `l` por separado es lo que permite variarlos; con un texto `"hsl(350, 62%, 74%)"` no se puede.
 - **Cómo sé que funciona:** las manchas salen de colores variados pero siempre reconocibles como de la paleta.
-- 🟡 **Estado:** de momento uso un RGB aleatorio con `rgb(${random(255)} ...)`, sin paleta. Mi `random(number)` da un entero entre 0 y `number`, y no recibe mínimo y máximo como pide `numeroAleatorio(min, max)`.
+- 🟡 **Estado:** código terminado (paleta `{ h, s, l }`, `numeroAleatorio(min, max)` y variación de tono, saturación y luminosidad). Faltan las comprobaciones a mano de abajo (20 llamadas en consola y 20 clics) y la explicación de `hsl` vs `rgb`.
 
 **✅ Checklist**
-- [ ] La paleta es una constante al principio del fichero, no está dentro de una función.
-- [ ] Cada color guarda `h`, `s` y `l` por separado.
-- [ ] `numeroAleatorio(min, max)` existe y la uso siempre, sin `Math.random()` suelto por el código.
-- [ ] En la consola, llamar 20 veces a `numeroAleatorio(5, 10)` devuelve siempre valores dentro del rango.
-- [ ] La variación de tono es pequeña: el color sigue siendo de la paleta.
-- [ ] Tras 20 clics, todos los colores se reconocen como de la paleta y ninguno es chillón.
-- [ ] Sé explicar por qué `hsl` es más cómodo que `rgb` para variar un color.
+- [x] La paleta es una constante al principio del fichero, no está dentro de una función.
+- [x] Cada color guarda `h`, `s` y `l` por separado.
+- [x] `numeroAleatorio(min, max)` existe y la uso siempre, sin `Math.random()` suelto por el código.
+- [x] En la consola, llamar 20 veces a `numeroAleatorio(5, 10)` devuelve siempre valores dentro del rango.
+- [x] La variación de tono es pequeña: el color sigue siendo de la paleta.
+- [x] Tras 20 clics, todos los colores se reconocen como de la paleta y ninguno es chillón.
+- [x] Sé explicar por qué `hsl` es más cómodo que `rgb` para variar un color.
 - [ ] Cierre común hecho.
 
 ### Paso 7 · De círculo a forma irregular
