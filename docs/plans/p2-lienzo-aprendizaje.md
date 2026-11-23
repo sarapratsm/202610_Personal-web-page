@@ -175,11 +175,11 @@ Cada paso tiene su checklist específica. Además, antes de darlo por terminado 
 - **Cómo sé que funciona:** la forma parece una gota o charco, sin picos.
 
 **✅ Checklist**
-- [ ] No se ve ningún pico y la forma parece un charco.
-- [ ] 🔎 ¿En qué punto empieza el trazo con `moveTo` y en cuál termina la última curva? ¿Coinciden? *(Revísalo con pocos puntos, por ejemplo 5, para verlo mejor. Mira también qué hace `closePath` al final.)*
+- [x] No se ve ningún pico y la forma parece un charco.
+- [x] 🔎 ¿En qué punto empieza el trazo con `moveTo` y en cuál termina la última curva? ¿Coinciden? *(Revísalo con pocos puntos, por ejemplo 5, para verlo mejor. Mira también qué hace `closePath` al final.)*
 - [x] La lógica está en una función reutilizable (`trazarCurva(puntos)`). *(La mía recibe también `ctx`: `trazarCurva(ctx, puntos)`, y está bien.)*
 - [ ] Puedo explicar con un dibujo en papel por qué usamos puntos medios.
-- [ ] Probado con 5 puntos y con 30 puntos, y la forma sigue siendo válida.
+- [x] Probado con 5 puntos y con 30 puntos, y la forma sigue siendo válida.
 - [ ] Cierre común hecho.
 
 ### Paso 9 · Transparencia y mezcla de pigmentos

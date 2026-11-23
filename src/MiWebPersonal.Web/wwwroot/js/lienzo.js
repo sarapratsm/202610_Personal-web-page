@@ -14,7 +14,7 @@ const VARIACION_RADIO_MAXIMA = 50;
 const VARIACION_TONO = 8;
 const VARIACION_SATURACION = 5;
 const VARIACION_LUMINOSIDAD = 5;
-const NUMERO_PUNTOS = 16; //Número de puntos que se crean para formar la curva. Cuantos más puntos, más suave será la curva, pero más costoso será dibujarla.
+const NUMERO_PUNTOS = 10; //Número de puntos que se crean para formar la curva. Cuantos más puntos, más suave será la curva, pero más costoso será dibujarla.
 const OPACIDAD = 0.5; //Opacidad de la pintura. Cuanto más baja, más transparente será la pintura y más se mezclará con los colores de fondo y con otras pinturas.
 const COMPOSICION = 'multiply'; //Modo de composición de la pintura. https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/globalCompositeOperation
 
@@ -120,9 +120,10 @@ function puntoMedio(a, b) {
 }
 
 /**
- * Traza una curva suave a través de los puntos dados en el contexto del canvas.
+ * Traza en el contexto del canvas una forma cerrada y suave usando los puntos dados como puntos de control.
+ * La curva no pasa por los puntos: pasa por los puntos medios entre cada par de puntos consecutivos y se dobla hacia cada punto, así que la forma queda algo por dentro de ellos.
  * @param {CanvasRenderingContext2D} ctx - El contexto del canvas donde se dibujará la curva.
- * @param {Array} puntos - Un array de objetos con propiedades x e y que representan los puntos a través de los cuales se trazará la curva.
+ * @param {Array} puntos - Un array de objetos con propiedades x e y que hacen de puntos de control de la curva (no son puntos por los que pase).
  */
 function trazarCurva(ctx, puntos) {
     if (!puntos || puntos.length === 0) return;
