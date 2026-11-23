@@ -137,7 +137,7 @@ Cada paso tiene su checklist específica. Además, antes de darlo por terminado 
 - **Qué hago:** definir una paleta de 4-6 colores guardados como `{ h, s, l }` (no como texto), de colores suaves. Elegir uno al azar y variar un poco su tono, saturación y luminosidad en cada mancha. Crear una función pequeña `numeroAleatorio(min, max)` y usarla.
 - **Pista:** guardar `h`, `s` y `l` por separado es lo que permite variarlos; con un texto `"hsl(350, 62%, 74%)"` no se puede.
 - **Cómo sé que funciona:** las manchas salen de colores variados pero siempre reconocibles como de la paleta.
-- 🟡 **Estado:** código terminado (paleta `{ h, s, l }`, `numeroAleatorio(min, max)` y variación de tono, saturación y luminosidad). Faltan las comprobaciones a mano de abajo (20 llamadas en consola y 20 clics) y la explicación de `hsl` vs `rgb`.
+- ✅ **Estado:** terminado (paleta `{ h, s, l }`, `numeroAleatorio(min, max)` y variación de tono, saturación y luminosidad). Solo queda el cierre común.
 
 **✅ Checklist**
 - [x] La paleta es una constante al principio del fichero, no está dentro de una función.
@@ -178,7 +178,7 @@ Cada paso tiene su checklist específica. Además, antes de darlo por terminado 
 - [x] No se ve ningún pico y la forma parece un charco.
 - [x] 🔎 ¿En qué punto empieza el trazo con `moveTo` y en cuál termina la última curva? ¿Coinciden? *(Revísalo con pocos puntos, por ejemplo 5, para verlo mejor. Mira también qué hace `closePath` al final.)*
 - [x] La lógica está en una función reutilizable (`trazarCurva(puntos)`). *(La mía recibe también `ctx`: `trazarCurva(ctx, puntos)`, y está bien.)*
-- [ ] Puedo explicar con un dibujo en papel por qué usamos puntos medios.
+- [x] Puedo explicar con un dibujo en papel por qué usamos puntos medios.
 - [x] Probado con 5 puntos y con 30 puntos, y la forma sigue siendo válida.
 - [ ] Cierre común hecho.
 
@@ -192,8 +192,8 @@ Cada paso tiene su checklist específica. Además, antes de darlo por terminado 
 **✅ Checklist**
 - [x] Dos manchas solapadas dan una zona más oscura en la intersección.
 - [x] La opacidad está en una constante, no repetida en cinco sitios.
-- [ ] La mancha se ve bien sobre la textura y sobre fondo claro.
-- [ ] Sé explicar qué hace `multiply` y en qué se diferencia de simplemente bajar el alfa.
+- [x] La mancha se ve bien sobre la textura y sobre fondo claro.
+- [x] Sé explicar qué hace `multiply` y en qué se diferencia de simplemente bajar el alfa.
 - [ ] Cierre común hecho.
 
 ### Paso 10 · Degradado y borde de pigmento
@@ -203,9 +203,9 @@ Cada paso tiene su checklist específica. Además, antes de darlo por terminado 
 - **Cómo sé que funciona:** la mancha ya "parece" acuarela cuando la miro a un palmo de la pantalla.
 
 **✅ Checklist**
-- [ ] Se distingue un centro más intenso y un borde más suave.
-- [ ] Los `addColorStop` van entre 0 y 1 y en orden creciente.
-- [ ] El radio exterior del degradado coincide con el tamaño de la mancha.
+- [x] Se distingue un centro más intenso y un borde más suave.
+- [x] Los `addColorStop` van entre 0 y 1 y en orden creciente.
+- [x] El radio exterior del degradado coincide con el tamaño de la mancha.
 - [ ] El anillo es más oscuro y fino que el relleno, y no tiñe lo que se dibuje después. *(Esto último se cierra con `save()` / `restore()` en el paso 11.)*
 - [ ] El grosor del anillo varía un poco de una mancha a otra.
 - [ ] 30 clics seguidos no producen tirones.
