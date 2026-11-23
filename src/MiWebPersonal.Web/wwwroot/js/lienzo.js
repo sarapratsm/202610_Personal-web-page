@@ -110,6 +110,16 @@ function crearPuntos(cx, cy, radio, n) {
 }
 
 /**
+ * Calcula el punto medio entre dos puntos.
+ * @param {{x: number, y: number}} a - Primer punto.
+ * @param {{x: number, y: number}} b - Segundo punto.
+ * @returns {{x: number, y: number}} El punto situado justo a mitad de camino entre a y b.
+ */
+function puntoMedio(a, b) {
+    return { x: (a.x + b.x) / 2, y: (a.y + b.y) / 2 };
+}
+
+/**
  * Traza una curva suave a través de los puntos dados en el contexto del canvas.
  * @param {CanvasRenderingContext2D} ctx - El contexto del canvas donde se dibujará la curva.
  * @param {Array} puntos - Un array de objetos con propiedades x e y que representan los puntos a través de los cuales se trazará la curva.
@@ -117,24 +127,20 @@ function crearPuntos(cx, cy, radio, n) {
 function trazarCurva(ctx, puntos) {
     if (!puntos || puntos.length === 0) return;
 
-    let pActual = puntos[0];
-    let pSiguiente;
-    let pMedioX, pMedioY;
+    //Empezamos en el punto medio entre el último punto y el primero: es donde terminará la última curva del bucle, así la forma se cierra sin ningún pico.
+    const ultimo = puntos[puntos.length - 1];
+    const inicio = puntoMedio(ultimo, puntos[0]);
 
     ctx.beginPath();
-    ctx.moveTo(pActual.x, pActual.y); //Mover el cursor a la posición del primer punto
+    ctx.moveTo(inicio.x, inicio.y);
 
     for (let i = 0; i < puntos.length; i++) {
-         pActual = puntos[i];
-         pSiguiente = puntos[(i + 1) % puntos.length]; //El siguiente punto, o el primero si estamos en el último punto.
+        const pActual = puntos[i];
+        const pSiguiente = puntos[(i + 1) % puntos.length]; //El siguiente punto, o el primero si estamos en el último punto.
+        const pMedio = puntoMedio(pActual, pSiguiente);
 
-        //Punto medio entre los dos
-         pMedioX = (pActual.x + pSiguiente.x) / 2;
-         pMedioY = (pActual.y + pSiguiente.y) / 2;
-
-        ctx.quadraticCurveTo(pActual.x, pActual.y, pMedioX, pMedioY); //Dibujar una curva cuadrática desde el punto actual hasta el punto medio, usando el punto actual como control.
+        ctx.quadraticCurveTo(pActual.x, pActual.y, pMedio.x, pMedio.y); //Curva cuadrática hasta el punto medio, usando el punto actual como control.
     }
-    ctx.quadraticCurveTo(pActual.x, pActual.y, puntos[0].x, puntos[0].y); //Dibujar una curva cuadrática desde el último punto hasta el primer punto, usando el último punto como control.
     ctx.closePath();
 }
 
