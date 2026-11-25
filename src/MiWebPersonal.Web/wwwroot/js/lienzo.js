@@ -11,17 +11,19 @@ const NUMERO_PUNTOS = 10; //Número de puntos que se crean para formar la curva.
 
 const RADIO_MINIMO = 20;
 const RADIO_MAXIMO = 40;
-const GRUESO_CONTORNO = 3; //Grosor del contorno de la pintura. Cuanto más alto, más grueso será el contorno y más se notará la forma de la pintura.
 const VARIACION_RADIO_MINIMA = 10;
 const VARIACION_RADIO_MAXIMA = 50;
 const VARIACION_TONO = 8;
 const VARIACION_SATURACION = 5;
 const VARIACION_LUMINOSIDAD = 5;
-const VARIACION_GRUESO_CONTORNO = 2.5; //Variación aleatoria del grosor del contorno de la pintura. Cuanto más alto, más variará el grosor del contorno y más irregular será la forma de la pintura.
-
 const OPACIDAD = 0.5; //Opacidad de la pintura. Cuanto más baja, más transparente será la pintura y más se mezclará con los colores de fondo y con otras pinturas.
-const COMPOSICION = 'multiply'; //Modo de composición de la pintura. https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/globalCompositeOperation
+
+const GRUESO_CONTORNO = 3; //Grosor del contorno de la pintura. Cuanto más alto, más grueso será el contorno y más se notará la forma de la pintura.
+const VARIACION_GRUESO_CONTORNO = 2.5; //Variación aleatoria del grosor del contorno de la pintura. Cuanto más alto, más variará el grosor del contorno y más irregular será la forma de la pintura.
+const OPACIDAD_CONTORNO = OPACIDAD / 3;
 const OSCURECER_CONTORNO = 15;
+
+const COMPOSICION = 'multiply'; //Modo de composición de la pintura. https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/globalCompositeOperation
 
 // Paleta de colores
 const PALETAS = {
@@ -53,8 +55,14 @@ function enteroAleatorio(min, max) {
     return Math.floor(Math.random() * (max - min + 1) + min);
 }
 
+/**
+ * Genera un número aleatorio decimal entre el valor mínimo y máximo definidos
+ * @param {number} min - El valor mínimo (incluido)
+ * @param {number} max - El valor máximo (nunca se alcanza del todo, porque Math.random() no devuelve 1)
+ * @returns {number} Un número aleatorio decimal en el rango [min, max)
+ */
 function decimalAleatorio(min, max) {
-    return Math.random() * (max - min + 1) + min;
+    return Math.random() * (max - min) + min;
 }
 
 
@@ -155,34 +163,45 @@ function trazarCurva(ctx, puntos) {
 
 /**
  * Crea un gradiente radial en el contexto del canvas y lo asigna como relleno.
+ * El gradiente va de un círculo interior (x, y, 0) a uno exterior (x, y, radio): mismo centro, y el color pasa de opaco en el centro a transparente en el borde.
  * @param {CanvasRenderingContext2D} ctx - El contexto del canvas donde se creará el gradiente.
  * @param {number} x - La coordenada x del centro del gradiente.
  * @param {number} y - La coordenada y del centro del gradiente.
  * @param {number} radio - El radio exterior del gradiente: debe cubrir toda la mancha, porque fuera de él se repite el último color (transparente).
  * @param {number} h - El tono del color (0-360).
- * @param {number} l - La luminosidad del color, en porcentaje. Ojo: va antes que la saturación.
  * @param {number} s - La saturación del color, en porcentaje.
+ * @param {number} l - La luminosidad del color, en porcentaje.
  * @see https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/createRadialGradient
  * @see https://developer.mozilla.org/en-US/docs/Web/API/CanvasGradient/addColorStop
  */
-function aplicarGradiente(ctx, x, y, radio, h, l, s) {
+function aplicarGradiente(ctx, x, y, radio, h, s, l) {
     const color = `hsla(${h}, ${s}%, ${l}%, ${OPACIDAD})`;
     const colorTransparente = `hsla(${h}, ${s}%, ${l}%, 0)`;
     const gradiente = ctx.createRadialGradient(x, y, 0, x, y, radio);
-    // circuloInterior = ctx.createRadialGradient(x, y, 0);
-    // circuloExterior = ctx.createRadialGradient(x, y, radio);
     gradiente.addColorStop(0, color);
     gradiente.addColorStop(1, colorTransparente);
     ctx.fillStyle = gradiente;
 }
 
+/**
+ * Pinta el relleno de la forma
+ * @param {CanvasRenderingContext2D} ctx - El contexto del canvas
+ */
 function pintarRelleno(ctx) {
     ctx.fill();
 }
 
+/**
+ * Pinta el contorno de la forma. Reutiliza el camino ya trazado con trazarCurva, así que debe llamarse después de ella.
+ * El contorno es más oscuro que el relleno (OSCURECER_CONTORNO), poco opaco y de grosor aleatorio.
+ * @param {CanvasRenderingContext2D} ctx - El contexto del canvas.
+ * @param {number} h - El tono del color (0-360).
+ * @param {number} s - La saturación del color, en porcentaje.
+ * @param {number} l - La luminosidad del color de la mancha, en porcentaje (antes de oscurecerla para el contorno).
+ */
 function pintarContorno(ctx, h, s, l) {
-    ctx.LineWidth = decimalAleatorio(GRUESO_CONTORNO - VARIACION_GRUESO_CONTORNO, GRUESO_CONTORNO + VARIACION_GRUESO_CONTORNO)
-    const colorContorno = `hsla(${h}, ${s}%, ${l-OSCURECER_CONTORNO}%, ${OPACIDAD / 2.5})`;
+    ctx.lineWidth = decimalAleatorio(GRUESO_CONTORNO - VARIACION_GRUESO_CONTORNO, GRUESO_CONTORNO + VARIACION_GRUESO_CONTORNO)
+    const colorContorno = `hsla(${h}, ${s}%, ${l-OSCURECER_CONTORNO}%, ${OPACIDAD_CONTORNO})`;
     ctx.strokeStyle = colorContorno;
     ctx.stroke();
 }
@@ -211,7 +230,7 @@ function pintarLienzo(ctx, x, y, paleta) {
     const puntos = crearPuntos(x, y, radio, NUMERO_PUNTOS);
     ctx.globalCompositeOperation = COMPOSICION; //Para que los colores se mezclen al superponerse
     trazarCurva(ctx, puntos);
-    aplicarGradiente(ctx, x, y, RADIO_MAXIMO + VARIACION_RADIO_MAXIMA, h, l, s);
+    aplicarGradiente(ctx, x, y, RADIO_MAXIMO + VARIACION_RADIO_MAXIMA, h, s, l);
 
     pintarRelleno(ctx);
     pintarContorno(ctx, h, s, l);
