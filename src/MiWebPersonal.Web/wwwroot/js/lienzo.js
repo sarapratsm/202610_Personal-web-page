@@ -7,17 +7,21 @@ const BOTON_PRINCIPAL = 0; //El botón principal del ratón es el izquierdo, el 
 const MAX_TONO_HSLA = 360; //Valor máximo de tono en el modelo de color HSL. https://developer.mozilla.org/en-US/docs/Web/CSS/color_value/hsl
 
 //Constantes de configuración
+const NUMERO_PUNTOS = 10; //Número de puntos que se crean para formar la curva. Cuantos más puntos, más suave será la curva, pero más costoso será dibujarla.
+
 const RADIO_MINIMO = 20;
 const RADIO_MAXIMO = 40;
+const GRUESO_CONTORNO = 3; //Grosor del contorno de la pintura. Cuanto más alto, más grueso será el contorno y más se notará la forma de la pintura.
 const VARIACION_RADIO_MINIMA = 10;
 const VARIACION_RADIO_MAXIMA = 50;
 const VARIACION_TONO = 8;
 const VARIACION_SATURACION = 5;
 const VARIACION_LUMINOSIDAD = 5;
-const NUMERO_PUNTOS = 10; //Número de puntos que se crean para formar la curva. Cuantos más puntos, más suave será la curva, pero más costoso será dibujarla.
+const VARIACION_GRUESO_CONTORNO = 2.5; //Variación aleatoria del grosor del contorno de la pintura. Cuanto más alto, más variará el grosor del contorno y más irregular será la forma de la pintura.
+
 const OPACIDAD = 0.5; //Opacidad de la pintura. Cuanto más baja, más transparente será la pintura y más se mezclará con los colores de fondo y con otras pinturas.
 const COMPOSICION = 'multiply'; //Modo de composición de la pintura. https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/globalCompositeOperation
-
+const OSCURECER_CONTORNO = 15;
 
 // Paleta de colores
 const PALETAS = {
@@ -45,8 +49,12 @@ function log(message) {
  * @param {number} max - El valor máximo (incluido)
  * @returns {number} Un número aleatorio entero en el rango [min, max]
  */
-function numeroAleatorio(min, max) {
+function enteroAleatorio(min, max) {
     return Math.floor(Math.random() * (max - min + 1) + min);
+}
+
+function decimalAleatorio(min, max) {
+    return Math.random() * (max - min + 1) + min;
 }
 
 
@@ -102,8 +110,8 @@ function crearPuntos(cx, cy, radio, n) {
     for (let i = 0; i < n; i++) {
         const angle = (i / n) * 2 * Math.PI;
         puntos[i] = {
-            x: cx + Math.cos(angle) * (radio + numeroAleatorio(VARIACION_RADIO_MINIMA, VARIACION_RADIO_MAXIMA)),
-            y: cy + Math.sin(angle) * (radio + numeroAleatorio(VARIACION_RADIO_MINIMA, VARIACION_RADIO_MAXIMA))
+            x: cx + Math.cos(angle) * (radio + enteroAleatorio(VARIACION_RADIO_MINIMA, VARIACION_RADIO_MAXIMA)),
+            y: cy + Math.sin(angle) * (radio + enteroAleatorio(VARIACION_RADIO_MINIMA, VARIACION_RADIO_MAXIMA))
         };
     }
     return puntos;
@@ -159,11 +167,24 @@ function trazarCurva(ctx, puntos) {
  */
 function aplicarGradiente(ctx, x, y, radio, h, l, s) {
     const color = `hsla(${h}, ${s}%, ${l}%, ${OPACIDAD})`;
-    const colorTransparente =  `hsla(${h}, ${s}%, ${l}%, 0)`;
+    const colorTransparente = `hsla(${h}, ${s}%, ${l}%, 0)`;
     const gradiente = ctx.createRadialGradient(x, y, 0, x, y, radio);
+    // circuloInterior = ctx.createRadialGradient(x, y, 0);
+    // circuloExterior = ctx.createRadialGradient(x, y, radio);
     gradiente.addColorStop(0, color);
     gradiente.addColorStop(1, colorTransparente);
     ctx.fillStyle = gradiente;
+}
+
+function pintarRelleno(ctx) {
+    ctx.fill();
+}
+
+function pintarContorno(ctx, h, s, l) {
+    ctx.LineWidth = decimalAleatorio(GRUESO_CONTORNO - VARIACION_GRUESO_CONTORNO, GRUESO_CONTORNO + VARIACION_GRUESO_CONTORNO)
+    const colorContorno = `hsla(${h}, ${s}%, ${l-OSCURECER_CONTORNO}%, ${OPACIDAD / 2.5})`;
+    ctx.strokeStyle = colorContorno;
+    ctx.stroke();
 }
 
 
@@ -178,22 +199,26 @@ function aplicarGradiente(ctx, x, y, radio, h, l, s) {
  * @see https://developer.mozilla.org/es/docs/Learn_web_development/Core/Scripting/Events
  */
 function pintarLienzo(ctx, x, y, paleta) {
-    const radio = numeroAleatorio(RADIO_MINIMO, RADIO_MAXIMO);
-    const color = paleta[numeroAleatorio(0, paleta.length - 1)];
-    const variacionTono = numeroAleatorio(-VARIACION_TONO, VARIACION_TONO);
-    const variacionSaturacion = numeroAleatorio(-VARIACION_SATURACION, VARIACION_SATURACION);
-    const variacionLuminosidad = numeroAleatorio(-VARIACION_LUMINOSIDAD, VARIACION_LUMINOSIDAD);
+    const radio = enteroAleatorio(RADIO_MINIMO, RADIO_MAXIMO);
+    const color = paleta[enteroAleatorio(0, paleta.length - 1)];
+    const variacionTono = enteroAleatorio(-VARIACION_TONO, VARIACION_TONO);
+    const variacionSaturacion = enteroAleatorio(-VARIACION_SATURACION, VARIACION_SATURACION);
+    const variacionLuminosidad = enteroAleatorio(-VARIACION_LUMINOSIDAD, VARIACION_LUMINOSIDAD);
     const h = (color.h + variacionTono + MAX_TONO_HSLA) % MAX_TONO_HSLA;
     const s = color.s + variacionSaturacion;
     const l = color.l + variacionLuminosidad;
 
     const puntos = crearPuntos(x, y, radio, NUMERO_PUNTOS);
-
     ctx.globalCompositeOperation = COMPOSICION; //Para que los colores se mezclen al superponerse
     trazarCurva(ctx, puntos);
-    aplicarGradiente(ctx, x, y, RADIO_MAXIMO+VARIACION_RADIO_MAXIMA, h, l, s);
-    ctx.fill();
+    aplicarGradiente(ctx, x, y, RADIO_MAXIMO + VARIACION_RADIO_MAXIMA, h, l, s);
+
+    pintarRelleno(ctx);
+    pintarContorno(ctx, h, s, l);
+
+
 }
+
 
 //=========FUNCIÓN PRINCIPAL=========
 
